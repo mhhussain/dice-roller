@@ -9,6 +9,7 @@ require("dotenv").config();
 
 const db = monk(process.env.MONGODB_URI);
 const sessions = db.get("sessions");
+const rolls = db.get("rolls");
 
 const sessionSchema = yup.object().shape({
   _id: yup.string().trim().required(),
@@ -18,6 +19,8 @@ const sessionSchema = yup.object().shape({
 
 const rollSchema = yup.object().shape({
   _id: yup.string().trim().required(),
+  sessionId: yup.string().trim().required(),
+  name: yup.string().trim().required(),
   dice: yup.number().required(),
   roll: yup.number().required(),
   createdDate: yup.date().required(),
@@ -50,6 +53,7 @@ app.use((e, req, res, next) => {
   });
 });
 
+// Session routes
 app.get("/session", async (req, res) => {
   const allSessions = await sessions.find();
   res.json(allSessions);
@@ -80,6 +84,29 @@ app.delete("/session/:id", async (req, res) => {
   const { id: _id } = req.params;
   const updated = await sessions.update({ _id }, { $set: { open: false } });
   res.json(typeof updated != "undefined");
+});
+
+// Roll routes
+app.get("/roll/:sessionId/:name", async (req, res) => {
+  const { sessionId, name } = req.params;
+
+  const allRolls = await rolls.find({ sessionId, name });
+  res.json(allRolls);
+});
+
+app.post("/roll/:sessionId/:name/:dice", async (req, res) => {
+  const { sessionId, name, dice } = req.params;
+
+  let newRoll = {
+    sessionId,
+    name,
+    dice,
+    roll: Math.ceil(Math.random() * dice),
+    createdDate: new Date(),
+  };
+
+  const createdRoll = await rolls.insert(newRoll);
+  res.json(createdRoll);
 });
 
 const port = process.env.PORT || 9002;

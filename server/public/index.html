@@ -49,21 +49,24 @@
           type="button"
           class="btn btn-primary"
           value="Join Session"
-          v-on:click="joinSession(sessionId)"
+          v-on:click="joinSession(sessionId, name)"
         />
         <input
           type="button"
           class="btn btn-success"
           value="Create Session"
-          v-on:click="createSession()"
+          v-on:click="createSession(name)"
         />
       </div>
       <div id="dice-roller-main" v-if="storedSession" class="text-center">
-        <a href="/#">Session ID: {{storedSession._id}}</a>
+        <a href="#" v-on:click="copyToClipboard(storedSession._id)">Session ID: {{storedSession._id}}</a>
         <div class="alert alert-danger" v-if="!storedSession.open">
           Session is closed.
         </div>
         <div class="form-group row">
+          <label for="storedName" class="col-sm-3 col-form-label text-right">
+            {{storedName}}
+          </label>
           <input type="button" class="btn btn-primary col-sm-2" v-on:click="rollDice(dice)" value="Roll"></button>
           <input
             type="number"
@@ -73,13 +76,21 @@
             id="dice"
           />
         </div>
-        <ul class="list-group list-group-horizontal-sm text-dark">
-          <li class="list-group-item" v-for="roll in rolls">
-            <div data-toggle="tooltip" data-placement="top" v-bind:title="`Created: ${roll.createdDate}`">
-              {{`${roll.roll}d${roll.dice}`}}
+        <div class="col-sm">
+          <!--<ul class="list-group list-group-horizontal-sm text-dark">
+            <li class="list-group-item" v-for="roll in rolls">
+              <span data-toggle="tooltip" data-placement="top" v-bind:title="`Created: ${roll.createdDate}`">
+                {{`${roll.roll}d${roll.dice}`}}
+              </span>
+            </li>
+          </ul>-->
+            <div class="card" style="width: 8rem;" v-for="roll in rolls" data-toggle="tooltip" data-placement="top" v-bind:title="`Rolled on: ${roll.createdDate}`">
+              <p class="card-text text-secondary">{{`d${roll.dice}`}}</p>
+              <h5 class="card-title text-dark">
+                {{roll.roll}}
+              </h5>
             </div>
-          </li>
-        </ul>
+      </div>
       </div>
     </main>
     <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>

@@ -1,5 +1,5 @@
 @url=http://localhost:9002
-@sessionid=5f09554658a68ea7ab11597d
+@sessionid=5f0a04a2f55dc2b338d02d34
 
 ###
 GET {{url}}
@@ -19,3 +19,12 @@ POST {{url}}/session
 
 ###
 DELETE {{url}}/session/{{sessionid}}
+
+###
+### Rolls
+###
+
+GET {{url}}/roll/{{sessionid}}/Darkops
+
+###
+POST {{url}}/roll/{{sessionid}}/Darkops/100
