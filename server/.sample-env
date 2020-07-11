@@ -1,0 +1,1 @@
+MONGDO_URL=mongodb+srv://<username>:<password>@mongo-a-9e00a.mongodb.net/dice-roller?retryWrites=true&w=majority
