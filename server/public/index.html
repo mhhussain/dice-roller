@@ -3,21 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>Dice Roller</title>
   </head>
-  <body>
-    <h1>Dice Roller</h1>
-    <h3>Enter a session id to join a session.</h3>
-    <label for="session-id">Session ID</label>
-    <input
-      type="text"
-      name="session-id"
-      id="session-id"
-      placeholder="enter session id"
+  <body class="container-fluid bg-dark text-light">
+    <head>
+      <h1 class="text-center">Dice Roller</h1>
+    </head>
+    <main id="app">
+      <div id="get-create" class="text-center" v-if="!storedSession">
+        <p>
+          <small>Enter a session id to join a session.</small>
+        </p>
+        <div class="form-group row">
+          <label for="session-id" class="col-sm-3 col-form-label text-right"
+            >Session ID</label
+          >
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              v-model="sessionId"
+              name="session-id"
+              id="session-id"
+              placeholder="enter session id"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="name" class="col-sm-3 col-form-label text-right"
+            >Name</label
+          >
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              v-model="name"
+              name="name"
+              id="name"
+              placeholder="enter name"
+            />
+          </div>
+        </div>
+        <input
+          type="button"
+          class="btn btn-primary"
+          value="Join Session"
+          v-on:click="joinSession(sessionId)"
+        />
+        <input
+          type="button"
+          class="btn btn-success"
+          value="Create Session"
+          v-on:click="createSession()"
+        />
+      </div>
+      <div id="dice-roller-main" v-if="storedSession" class="text-center">
+        <a href="/#">Session ID: {{storedSession._id}}</a>
+        <div class="alert alert-danger" v-if="!storedSession.open">
+          Session is closed.
+        </div>
+        <div class="form-group row">
+          <input type="button" class="btn btn-primary col-sm-2" v-on:click="rollDice(dice)" value="Roll"></button>
+          <input
+            type="number"
+            class="form-control col-sm-2"
+            v-model="dice"
+            name="dice"
+            id="dice"
+          />
+        </div>
+        <ul class="list-group list-group-horizontal-sm text-dark">
+          <li class="list-group-item" v-for="roll in rolls">
+            <div data-toggle="tooltip" data-placement="top" v-bind:title="`Created: ${roll.createdDate}`">
+              {{`${roll.roll}d${roll.dice}`}}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+    <script src="app.js"></script>
+
+    <!-- bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
     />
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" placeholder="enter name" />
-    <input type="button" value="Join Session" />
-    <input type="button" value="Create Session" />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
   </body>
 </html>

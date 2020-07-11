@@ -50,14 +50,13 @@ app.use((e, req, res, next) => {
   });
 });
 
-app.get("/session", (req, res) => {
-  // TODO: get all session
+app.get("/session", async (req, res) => {
+  const allSessions = await sessions.find();
+  res.json(allSessions);
 });
 
 app.get("/session/:id", async (req, res, next) => {
-  // TODO: get session by id
   const { id: _id } = req.params;
-  console.log(_id);
   try {
     const session = await sessions.findOne({ _id });
     res.json(session);
@@ -67,7 +66,6 @@ app.get("/session/:id", async (req, res, next) => {
 });
 
 app.post("/session", async (req, res) => {
-  // TODO: create a new session, return session id
   const session = {
     createdDate: new Date(),
     open: true,
@@ -76,6 +74,12 @@ app.post("/session", async (req, res) => {
   // create session
   const createdSession = await sessions.insert(session);
   res.json(createdSession);
+});
+
+app.delete("/session/:id", async (req, res) => {
+  const { id: _id } = req.params;
+  const updated = await sessions.update({ _id }, { $set: { open: false } });
+  res.json(typeof updated != "undefined");
 });
 
 const port = process.env.PORT || 9002;

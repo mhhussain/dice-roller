@@ -1,9 +1,21 @@
-GET http://localhost:9002
+@url=http://localhost:9002
+@sessionid=5f09554658a68ea7ab11597d
+
+###
+GET {{url}}
 
 ###
 
-GET http://localhost:9002/session/5f092358b7d7e973945bde11
+GET {{url}}/session
+
 
 ###
 
-POST http://localhost:9002/session
+GET {{url}}/session/{{sessionid}}
+
+###
+
+POST {{url}}/session
+
+###
+DELETE {{url}}/session/{{sessionid}}
