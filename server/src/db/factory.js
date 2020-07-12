@@ -1,8 +1,6 @@
 const { db } = require('./connection');
 const yup = require('yup');
 
-const collection = db.get('rolls');
-
 const make = (collectionName, schema) => {
   const collection = db.get(collectionName);
   return {
