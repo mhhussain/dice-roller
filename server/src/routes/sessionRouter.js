@@ -26,7 +26,7 @@ const closeSession = async (req, res) => {
   res.json(typeof updated != 'undefined');
 };
 
-module.exports = (app) => {
+module.exports.configRoutes = (app) => {
   app.get('/session', getAll);
   app.get('/session/:id', getById);
   app.post('/session', openNewSession);

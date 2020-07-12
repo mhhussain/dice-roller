@@ -2,11 +2,14 @@ const { db } = require('./connection');
 const yup = require('yup');
 const config = require('../config');
 
-const collection = db.get('sessions');
+const collection = db.get('rolls');
 
 const schema = yup.object().shape({
+  sessionId: yup.string().trim().required(),
+  name: yup.string().trim().required(),
+  dice: yup.number().required(),
+  roll: yup.number().required(),
   createdDate: yup.date().required(),
-  open: yup.boolean().required(),
 });
 
 const getAll = async () => {
@@ -44,6 +47,8 @@ const remove = async (id) => {
 module.exports = {
   getAll,
   getById,
+  find,
   create,
   update,
+  remove,
 };

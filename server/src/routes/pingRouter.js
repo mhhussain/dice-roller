@@ -2,6 +2,6 @@ const get = (req, res) => {
   res.json({ message: 'pong' });
 };
 
-module.exports = (app) => {
+module.exports.configRoutes = (app) => {
   app.get('/ping', get);
 };
