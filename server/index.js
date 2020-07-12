@@ -109,6 +109,12 @@ app.post("/roll/:sessionId/:name/:dice", async (req, res) => {
   res.json(createdRoll);
 });
 
+app.delete("/roll/:rollId", async (req, res) => {
+  const { rollId: _id } = req.params;
+  const deleted = await rolls.remove({ _id });
+  res.json(typeof deleted != "undefined");
+});
+
 const port = process.env.PORT || 9002;
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);

@@ -52,5 +52,25 @@ const app = new Vue({
     copyToClipboard(data) {
       navigator.clipboard.writeText(data);
     },
+    async deleteRoll(_id) {
+      const response = await fetch(`/roll/${_id}`, {
+        method: "DELETE",
+      });
+
+      const deleted = await response.json();
+      console.log(deleted);
+      if (deleted) {
+        const rollResponse = await fetch(
+          `/roll/${this.storedSession._id}/${this.storedName}`,
+          {
+            method: "GET",
+          }
+        );
+
+        const rollsList = await rollResponse.json();
+
+        this.rolls = rollsList;
+      }
+    },
   },
 });
