@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 export default {
+  basePath: _.defaultTo(process.env.BASE_URL, ''),
   firebaseConfig: {
     apiKey: _.defaultTo(
       process.env.FIREBASE_API_KEY,

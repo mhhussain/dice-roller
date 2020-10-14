@@ -4,8 +4,10 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/auth';
+
+import configs from '../../configs';
 
 Vue.use(VueRouter);
 
@@ -30,7 +32,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: configs.basePath,
   routes,
 });
 
