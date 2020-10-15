@@ -90,7 +90,7 @@ const isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/login');
+    res.status(401).send('Not authenticated');
 };
 
 // Security router to easily attach /register and /login routes
@@ -108,6 +108,12 @@ const securityRouter = (passport) => {
         successRedirect: '/',
         failureRedirect: '/login?message=login-failed',
     }));
+
+    // Logout route
+    router.route('/logout').post((req, res) => {
+        req.logout();
+        res.send();
+    });
 
     return router;
 };

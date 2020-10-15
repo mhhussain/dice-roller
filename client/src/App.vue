@@ -1,20 +1,15 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  },
+  components: {},
   async created() {
-    fetch('/auth/login', {
+    /*fetch('/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,8 +20,20 @@ export default {
       })
     })
     .then((res) => {
-      console.log(res.data);
-    });
+      console.log(res);
+      fetch('/api/session', {
+        method: 'GET',
+      })
+      .then((res) => {
+        console.log(res);
+      });
+    });*/
+    /*fetch('/api/session', {
+      method: 'GET',
+    })
+    .then((res) => {
+      console.log(res);
+    });*/
   }
 }
 </script>
