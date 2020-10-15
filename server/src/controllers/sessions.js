@@ -5,6 +5,12 @@ const getSession = (req, res) => {
     res.json('notimpl');
 };
 
+const getSessionById = async (req, res) => {
+    const { id } = req.params;
+    const session = await sessionsDb.find({ _id: id });
+    res.json(session);
+};
+
 const searchSessionByName = async (req, res) => {
     const { name, password } = req.body;
     const session = await sessionsDb.find({ name, password });
@@ -55,6 +61,9 @@ module.exports = {
     '/session': {
         get: getSession,
         post: createSession,
+    },
+    '/session/:id': {
+        get: getSessionById,
     },
     '/session/search': {
         post: searchSessionByName

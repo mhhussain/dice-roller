@@ -11,9 +11,11 @@
             v-bind:value="character"
             v-bind:item="character"
             v-bind:index="index"
-            v-bind:key="index">
+            v-bind:key="index"
+          >
             {{ character.name }}
             in session: {{ character.inSession }}
+            <button @click="joinSession(character._id)">Join</button>
           </li>
         </ul>
       </div>
@@ -21,7 +23,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import api from '../api/diceroller';
 
 export default {
@@ -41,14 +42,12 @@ export default {
   },
   methods: {
     async createCharacter() {
-      const { id: sessionId } = this.$route.params;
-      const data = {
-        name: this.newChar.name,
-        sessionId
-      };
-      await axios.post(`/api/character`, data)
+      await api.createCharacter(this.newChar.name, this.session.id);
       this.characters = await api.getCharacters(this.session.id);
       this.newChar = {};
+    },
+    async joinSession(characterId) {
+      this.$router.push(`/session/${this.session.id}/character/${characterId}`);
     }
   }
 }
