@@ -7,6 +7,9 @@ module.exports = {
       '/api': {
         target: 'http://localhost:5001',
       },
+      '/auth': {
+        target: 'http://localhost:5001',
+      },
     },
   },
 };

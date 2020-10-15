@@ -13,7 +13,7 @@ const passportSetup = (passport) => {
         done(null, user.id);
     });
     passport.deserializeUser((id, done) => {
-        User.fineOne({ _id: id }, '-password -salt', (e, user) => {
+        Users.findOne({ _id: id }, '-password -salt', (e, user) => {
             done(e, user);
         });
     });

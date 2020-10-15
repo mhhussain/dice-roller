@@ -12,6 +12,21 @@ export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  async created() {
+    fetch('/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "email": "test@test.com",
+        "password": "password"
+      })
+    })
+    .then((res) => {
+      console.log(res.data);
+    });
   }
 }
 </script>
