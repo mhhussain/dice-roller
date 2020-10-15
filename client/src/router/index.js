@@ -46,13 +46,12 @@ router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some(rec => rec.meta.requiresAuth);
     if(requiresAuth) {
         axios.get('/auth/ping')
-        .then((res) => {
-            if (res.status === 200) {
+            .then(() => {
                 next();
-            } else if (res.status === 401) {
+            })
+            .catch(() => {
                 next('/login');
-            }
-        });
+            });
     } else {
         next();
     }

@@ -22,6 +22,7 @@
 
 <script>
 import axios from 'axios';
+import api from '../api/diceroller';
 
 export default {
   name: 'character',
@@ -36,21 +37,18 @@ export default {
   async created() {
     const { id: sessionId } = this.$route.params;
     this.session.id = sessionId;
-    axios.get(`/api/character/${sessionId}`)
-      .then((res) => {
-        console.log(res.data);
-        this.characters = res.data;
-      });
+    this.characters = await api.getCharacters(this.session.id);
   },
   methods: {
-    createCharacter() {
+    async createCharacter() {
       const { id: sessionId } = this.$route.params;
-      const data = { name: this.newChar.name };
-      axios.post(`/api/character/${sessionId}`, data)
-        .then((res) => {
-          console.log(res);
-          this.$forceUpdate();
-        });
+      const data = {
+        name: this.newChar.name,
+        sessionId
+      };
+      await axios.post(`/api/character`, data)
+      this.characters = await api.getCharacters(this.session.id);
+      this.newChar = {};
     }
   }
 }

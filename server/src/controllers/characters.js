@@ -14,8 +14,7 @@ const getCharacters = async (req, res) => {
 };
 
 const createCharacter = async (req, res) => {
-    const { name } = req.body;
-    const { sessionId } = req.params;
+    const { name, sessionId } = req.body;
     const { _id } = req.user;
 
     const newChar = {
@@ -41,6 +40,8 @@ const createCharacter = async (req, res) => {
 module.exports = {
     '/character/:sessionId': {
         get: getCharacters,
+    },
+    '/character': {
         post: createCharacter,
     },
     getCharacters,

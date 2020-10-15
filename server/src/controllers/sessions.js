@@ -1,4 +1,5 @@
 const sessionsDb = require('../db/sessions');
+const characterDb = require('../db/characters');
 
 const getSession = (req, res) => {
     res.json('notimpl');
@@ -30,6 +31,26 @@ const createSession = async (req, res) => {
         });
 };
 
+const addToSession = async (req, res) => {
+    const { sessionId, characterId } = req.params;
+    const updatedChar = await characterDb.update(characterId, null, {
+        sessionId: sessionId,
+        inSession: true
+    });
+
+    res.json(typeof updatedChar != undefined);
+};
+
+const removeFromSession = async (req, res) => {
+    const { sessionId, characterId } = req.params;
+    const updatedChar = await characterDb.update(characterId, null, {
+        sessionId: sessionId,
+        inSession: false
+    });
+
+    res.json(typeof updatedChar != undefined);
+};
+
 module.exports = {
     '/session': {
         get: getSession,
@@ -37,6 +58,10 @@ module.exports = {
     },
     '/session/search': {
         post: searchSessionByName
+    },
+    '/session/:sessionId/character/:characterId': {
+        post: addToSession,
+        delete: removeFromSession,
     },
     getSession,
     createSession,
