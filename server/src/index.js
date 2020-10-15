@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const _ = require('lodash');
+const logger = require('./logger').logger('app');
 
 const configs = require('./configs');
 
@@ -38,5 +39,5 @@ app.use((e, req, res, next) => {
 });
 
 app.listen(configs.PORT, () => {
-    console.log(`Listening at http://localhost:${configs.PORT}`);
+    logger.info(`Listening at http://localhost:${configs.PORT}`);
 });
