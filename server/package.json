@@ -1,0 +1,25 @@
+{
+  "name": "dice-roller-api",
+  "version": "1.0.0",
+  "description": "dice-roller-api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo no tests",
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^4.1.1",
+    "lodash": "^4.17.20",
+    "monk": "^7.3.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.5",
+    "winston": "^3.3.3",
+    "yup": "^0.29.3"
+  }
+}
