@@ -2,6 +2,7 @@
   <div class="home-view">
       <Header />
       <h1>Find or create a session</h1>
+      <div class="error" v-if="error">{{ error.message }}</div>
       <div class="session-name">
           <label for="session-name">Session name:</label>
           <input type="text" v-model="session.name" placeholder="name">
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Header from '../components/Header.vue';
 
 export default {
@@ -25,28 +27,29 @@ export default {
     },
     data() {
         return {
+            error: '',
             session: {
                 name: '',
                 password: '',
             },
         };
     },
-    async created() {
-        fetch('/api/session', {
-            method: 'GET',
-        })
-        .then((res) => {
-            if (res.status === 401) {
-                this.$router.push('/login');
-            }
-        })
-        .catch((e) => {
-            console.log(e);
-        });
-    },
+    async created() {},
     methods: {
         joinSession() {
-            console.log('join');
+            const data = {
+                name: this.session.name,
+                password: this.session.password,
+            };
+            axios.post('/api/session/search', data)
+                .then((res) => {
+                    if (res.data.length > 0) {
+                        const session = res.data[0];
+                        this.$router.push(`/session/${session._id}/character`);
+                    } else {
+                        this.error = { message: 'no session found' };
+                    }
+                });
             // service.join session
             //   session.name
             //   session.password
@@ -54,7 +57,15 @@ export default {
             //   $router /session/:id/characters
         },
         createSession() {
-            console.log('create');
+            const data = {
+                name: this.session.name,
+                password: this.session.password,
+            };
+            axios.post('/api/session', data)
+                .then((res) => {
+                    const { _id: id } = res.data;
+                    this.$router.push(`/session/${id}/character`);
+                });
             // service.create session
             //   session.name
             //   session.password

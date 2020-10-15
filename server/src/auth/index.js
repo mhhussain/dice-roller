@@ -109,6 +109,15 @@ const securityRouter = (passport) => {
         failureRedirect: '/login?message=login-failed',
     }));
 
+    // Auth ping route
+    router.route('/ping').get((req, res) => {
+        if (req.user) {
+            res.status(200).send();
+        } else {
+            res.status(401).send();
+        }
+    });
+
     // Logout route
     router.route('/logout').post((req, res) => {
         req.logout();

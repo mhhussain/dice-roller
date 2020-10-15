@@ -3,6 +3,7 @@ const _ = require('lodash');
 const logger = require('../logger').logger('router');
 const sessionsController = require('../controllers/sessions');
 const usersController = require('../controllers/users');
+const charactersController = require('../controllers/characters');
 const rollsController = require('../controllers/rolls');
 
 // All controllers must be registered here
@@ -10,6 +11,7 @@ const controllers = _.merge(
     {},
     sessionsController,
     usersController,
+    charactersController,
     rollsController
 )
 

@@ -1,5 +1,5 @@
 
-const getUser = (req, res) => {
+const getSessionUser = (req, res) => {
     const { user } = req;
     res.json({
         username: user.username,
@@ -9,6 +9,6 @@ const getUser = (req, res) => {
 
 module.exports = {
     '/user': {
-        get: getUser,
+        get: getSessionUser,
     },
 };

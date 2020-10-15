@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import axios from 'axios';
 import LoginView from '../views/Login.vue';
 import HomeView from '../views/Home.vue';
+import CharacterView from '../views/Character.vue';
+import DiceRollerView from '../views/DiceRoller.vue';
 
 Vue.use(VueRouter);
 
@@ -21,17 +24,35 @@ const routes = [
         component: HomeView,
         meta: { requiresAuth: true },
     },
+    {
+        path: '/session/:id/character',
+        name: 'character',
+        component: CharacterView,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/session/:sessionId/character/:characterId',
+        name: 'diceroller',
+        component: DiceRollerView,
+        meta: { requiresAuth: true },
+    },
 ];
 
 const router = new VueRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some(rec => rec.meta.requiresAuth);
-    const isAuthenticated = true;
-    if (requiresAuth && !isAuthenticated) {
-        next('/login');
+    if(requiresAuth) {
+        axios.get('/auth/ping')
+        .then((res) => {
+            if (res.status === 200) {
+                next();
+            } else if (res.status === 401) {
+                next('/login');
+            }
+        });
     } else {
         next();
     }
