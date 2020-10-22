@@ -1,9 +1,25 @@
+const _ = require('lodash');
 const rollDb = require('../db/rolls');
 
 const getRollsForUser = async (req, res) => {
     const { user } = req;
+    const { sessionId, characterId } = req.params;
 
-    res.json('notimpl');
+    const rolls = await rollDb.find({ sessionId });
+
+    console.log(await rolls);
+
+    res.json(_.map(rolls, (r) => {
+        return {
+            sessionId: r.sessionId,
+            characterId: r.characterId,
+            dvalue: r.characterId === characterId || r.visible ? r.dvalue: null,
+            roll: r.characterId === characterId || r.visible ? r.roll : null,
+            name: r.name,
+            rollTime: r.rollTime,
+            visible: r.visible,
+        };
+    }));
 };
 
 const roll = async (req, res) => {
@@ -14,9 +30,9 @@ const roll = async (req, res) => {
         sessionId,
         characterId,
         dvalue,
-        rng,
         'roll': rng,
-        rollTime: newDate(),
+        name: 'roll',
+        rollTime: new Date(),
         visible: false,
     };
 
@@ -31,9 +47,47 @@ const roll = async (req, res) => {
         });
 };
 
+const showRoll = async (req, res) => {
+    const { id: _id } = req.params;
+    const updatedRoll = await rollDb.update(_id, null, {
+        visible: true,
+    });
+
+    res.json(typeof updatedRoll != undefined);
+};
+
+const hideRoll = async (req, res) => {
+    const { id: _id } = req.params;
+    const updatedRoll = await rollDb.update(_id, null, {
+        visible: false,
+    });
+
+    res.json(typeof updatedRoll != undefined);
+};
+
+const nameRoll = async (req, res) => {
+    const { id: _id } = req.params;
+    const { name } = req.body;
+
+    const updatedRoll = await rollDb.update(_id, null, {
+        name: name,
+    });
+
+    res.json(typeof updatedRoll != undefined);
+};
+
 module.exports = {
     '/roll': {
+        post: roll,
+    },
+    '/roll/session/:sessionId/character/:characterId' : {
         get: getRollsForUser,
-        post: roll
-    }
+    },
+    '/roll/:id/show': {
+        post: showRoll,
+        delete: hideRoll,
+    },
+    '/roll/:id/name': {
+        post: nameRoll,
+    },
 };

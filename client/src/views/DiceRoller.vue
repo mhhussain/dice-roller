@@ -9,9 +9,9 @@
           v-bind:key="index"
         >
           <div class="character-section">
-            <label for="character-name">{{ character.name }}</label>
+            <label for="character-name">{{ index }}</label>
             <ul>
-              <li v-for="(roll, rindex) in character.rolls"
+              <li v-for="(roll, rindex) in character"
                 v-bind:value="roll"
                 v-bind:item="roll"
                 v-bind:index="rindex"
@@ -26,10 +26,12 @@
           </div>
         </li>
       </ul>
+      <button @click="roll">Roll</button>
   </div>
 </template>
 
 <script>
+import _ from 'lodash';
 import api from '../api/diceroller';
 
 export default {
@@ -39,14 +41,35 @@ export default {
     return {
       error: '',
       session: {},
+      currentCharacter: {},
       characters: [],
     }
   },
   async created() {
-    const { sessionId } = this.$route.params;
+    const { sessionId, characterId } = this.$route.params;
     const res = await api.getSession(sessionId);
     this.session = res.data[0];
-  }
+    this.currentCharacter._id = characterId;
+
+    // Get roll list
+    const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
+    const x = _.groupBy(rolls.data, (r) => {
+      return r.characterId;
+    });
+
+    this.characters = x;
+    console.log(JSON.stringify(x));
+  },
+  methods: {
+    async roll() {
+      const res = await api.rollDie(this.session._id, this.currentCharacter._id, 20)
+      console.log(res.data);
+    },
+    async get() {
+      const res = await api.getRolls(this.session._id, this.currentCharacter._id);
+      console.log(res.data);
+    },
+  },
 }
 </script>
 
