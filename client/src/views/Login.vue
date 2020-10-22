@@ -98,10 +98,6 @@ export default {
   padding: 10px;
 }
 
-.el-row {
-  padding: 10px;
-}
-
 .el-input {
   width: 50vw;
   margin: 5px;

@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <el-header style="padding: 0">
-      <div class="header">
-        <h2>Dice Roller</h2>
-      </div>
-    </el-header>
+    <Header class="header" />
     <el-main>
       <router-view />
     </el-main>
@@ -12,12 +8,13 @@
 </template>
 
 <script>
-import { Header, Main } from 'element-ui'
+import { Main } from 'element-ui'
+import Header from './components/Header.vue';
 
 export default {
   name: 'App',
   components: {
-    'el-header': Header,
+    Header,
     'el-main': Main,
   },
   async created() {}

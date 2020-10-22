@@ -1,29 +1,37 @@
 <template>
   <div class="home-view">
-      <Header />
       <h1>Find or create a session</h1>
       <div class="error" v-if="error">{{ error.message }}</div>
       <div class="session-name">
-          <label for="session-name">Session name:</label>
-          <input type="text" v-model="session.name" placeholder="name">
+          <div>
+              <label for="session-name">Session name:</label>
+          </div>
+          <div>
+              <el-input type="text" v-model="session.name" placeholder="name" />
+          </div>
       </div>
       <div class="session-password">
-          <label for="session-password">Password:</label>
-          <input type="password" v-model="session.password" placeholder="password">
+          <div>
+              <label for="session-password">Password:</label>
+          </div>
+          <div>
+              <el-input type="password" v-model="session.password" placeholder="password" />
+          </div>
       </div>
-      <button @click="joinSession">Join Session</button>
-      <button @click="createSession">Create Session</button>
+      <el-button type="primary" @click="joinSession">Join Session</el-button>
+      <el-button type="success" @click="createSession">Create Session</el-button>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Header from '../components/Header.vue';
+import { Input, Button } from 'element-ui';
 
 export default {
     name: 'Home',
     components: {
-        Header,
+        'el-input': Input,
+        'el-button': Button,
     },
     data() {
         return {
@@ -50,11 +58,6 @@ export default {
                         this.error = { message: 'no session found' };
                     }
                 });
-            // service.join session
-            //   session.name
-            //   session.password
-            // then
-            //   $router /session/:id/characters
         },
         createSession() {
             const data = {
@@ -66,16 +69,25 @@ export default {
                     const { _id: id } = res.data;
                     this.$router.push(`/session/${id}/character`);
                 });
-            // service.create session
-            //   session.name
-            //   session.password
-            // then
-            //    $router /sessoin/:id/characters
         },
     }
 }
 </script>
 
-<style>
+<style scoped>
+.label {
+  text-align: right;
+  vertical-align: middle;
+  padding: 10px;
+}
 
+.el-input {
+  width: 50vw;
+  margin: 5px;
+}
+
+.el-button {
+  width: 50vw;
+  margin: 5px
+}
 </style>

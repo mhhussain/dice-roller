@@ -1,17 +1,24 @@
 <template>
   <div class="header-component">
-      <h1>Dice Roller</h1>
-      <label for="username" v-if="user">{{ user.username }}</label>
-      <button v-if="user" @click="logout">Logout</button>
-      <button v-if="!user" @click="login">Login</button>
+      <el-header style="display: inline-block">
+        <h2>Dice Roller</h2>
+        <label for="username" v-if="user">{{ user.username }}</label>
+        <el-button v-if="user" @click="logout">Logout</el-button>
+        <el-button v-if="!user" @click="login">Login</el-button>
+      </el-header>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { Header, Button } from 'element-ui';
+
 export default {
     name: 'Header',
-    components: {},
+    components: {
+        'el-header': Header,
+        'el-button': Button,
+    },
     data() {
         return {
             user: {}
@@ -21,6 +28,9 @@ export default {
         axios.get('/api/user')
             .then((res) => {
                 this.user = res.data;
+            })
+            .catch(() => {
+                this.user = null;
             });
     },
     methods: {
@@ -37,6 +47,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
