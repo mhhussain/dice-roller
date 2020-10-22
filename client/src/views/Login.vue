@@ -2,25 +2,37 @@
   <div class="login-view">
       <div class="error" v-if="error">{{ error.message }}</div>
       <h1>Login</h1>
-      <div class="email">
+      <div>
         <label for="email">Email:</label>
-        <input type="email" v-model="email" placeholder="email">
       </div>
-      <div class="password">
+      <div>
+        <el-input v-model="email" placeholder="email" />
+      </div>
+      <div>
         <label for="password">Password:</label>
-        <input type="password" v-model="password" placeholder="password">
       </div>
-      <button @click="login">Login</button>
-      <button @click="register">Register</button> 
+      <div>
+        <el-input v-model="password" placeholder="password" show-password />
+      </div>
+      <div class="button">
+        <el-button type="primary" @click="login">Login</el-button>
+      </div>
+      <div class="button">
+        <el-button type="success" @click="register">Register</el-button>
+      </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { Input, Button } from 'element-ui';
 
 export default {
   name: 'login',
-  components: {},
+  components: {
+    'el-input': Input,
+    'el-button': Button,
+  },
   data() {
     return {
       error: '',
@@ -75,6 +87,29 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.input {
+  width: 25em;
+}
+
+.label {
+  text-align: right;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+.el-row {
+  padding: 10px;
+}
+
+.el-input {
+  width: 50vw;
+  margin: 5px;
+}
+
+.el-button {
+  width: 50vw;
+  margin: 5px
+}
 
 </style>
