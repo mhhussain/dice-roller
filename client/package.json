@@ -1,5 +1,6 @@
 {
   "name": "dice-roller-ui",
+  "title": "Dice Roller",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +11,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "element-ui": "^2.13.2",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
     "vue-router": "^3.4.6"

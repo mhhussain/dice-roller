@@ -1,24 +1,45 @@
 <template>
   <div id="app">
-    <router-view />
+    <el-header style="padding: 0">
+      <div class="header">
+        <h2>Dice Roller</h2>
+      </div>
+    </el-header>
+    <el-main>
+      <router-view />
+    </el-main>
   </div>
 </template>
 
 <script>
+import { Header, Main } from 'element-ui'
+
 export default {
   name: 'App',
-  components: {},
+  components: {
+    'el-header': Header,
+    'el-main': Main,
+  },
   async created() {}
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #373F51;
+  background-color: #D8DBE2;
+  height: 100vh;
+  width: 100vw;
+}
+
+.header {
+  text-align: left;
+  color: #D8DBE2;
+  background-color: #373F51;
+  padding: 10px 0 10px 20vw;
 }
 </style>
