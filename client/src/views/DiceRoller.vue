@@ -22,6 +22,7 @@
                   <i v-if="!roll.roll">-- / --</i>
                   <input v-if="character._id === currentCharacter._id" v-model="roll.name" type="text"/>
                   <button v-if="character._id === currentCharacter._id" @click="renameRoll(roll._id, roll.name)">Rename</button>
+                  <button v-if="character._id === currentCharacter._id" @click="deleteRoll(roll._id)">Delete</button>
                   <div v-if="character._id != currentCharacter._id">{{ roll.name }}</div>
                 </div>
                 <button v-if="!roll.visible && character._id === currentCharacter._id" @click="showRoll(roll._id)">Show</button>
@@ -115,7 +116,20 @@ export default {
           rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
         };
       });
-    }
+    },
+    async deleteRoll(rollId) {
+      await api.deleteRoll(rollId);
+
+      // Get roll list
+      const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
+
+      this.characters = _.map(this.characterList, (char) => {
+        return {
+          ...char,
+          rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
+        };
+      });
+    },
   },
 }
 </script>
