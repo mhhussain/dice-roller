@@ -9,18 +9,23 @@
           v-bind:key="index"
         >
           <div class="character-section">
-            <label for="character-name">{{ index }}</label>
+            <label for="character-name">{{ character.name }}</label>
             <ul>
-              <li v-for="(roll, rindex) in character"
+              <li v-for="(roll, rindex) in character.rolls"
                 v-bind:value="roll"
                 v-bind:item="roll"
                 v-bind:index="rindex"
                 v-bind:key="rindex"
               >
                 <div class="card">
-                  {{ roll.roll }} / {{ roll.dvalue }}
-                  {{ roll.name }}
+                  <i v-if="roll.roll">{{ roll.roll }} / {{ roll.dvalue }}</i>
+                  <i v-if="!roll.roll">-- / --</i>
+                  <input v-if="character._id === currentCharacter._id" v-model="roll.name" type="text"/>
+                  <button v-if="character._id === currentCharacter._id" @click="renameRoll(roll._id, roll.name)">Rename</button>
+                  <div v-if="character._id != currentCharacter._id">{{ roll.name }}</div>
                 </div>
+                <button v-if="!roll.visible && character._id === currentCharacter._id" @click="showRoll(roll._id)">Show</button>
+                <button v-if="roll.visible && character._id === currentCharacter._id" @click="hideRoll(roll._id)">Hide</button>
               </li>
             </ul>
           </div>
@@ -42,6 +47,7 @@ export default {
       error: '',
       session: {},
       currentCharacter: {},
+      characterList: [],
       characters: [],
     }
   },
@@ -51,24 +57,65 @@ export default {
     this.session = res.data[0];
     this.currentCharacter._id = characterId;
 
+    // Get character list
+    const chars = await api.getCharacters(this.session._id);
+    this.characterList = chars;
+
     // Get roll list
     const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
-    const x = _.groupBy(rolls.data, (r) => {
-      return r.characterId;
-    });
+    console.log(rolls);
 
-    this.characters = x;
-    console.log(JSON.stringify(x));
+    this.characters = _.map(this.characterList, (char) => {
+      return {
+        ...char,
+        rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
+      };
+    });
   },
   methods: {
     async roll() {
       const res = await api.rollDie(this.session._id, this.currentCharacter._id, 20)
       console.log(res.data);
     },
-    async get() {
-      const res = await api.getRolls(this.session._id, this.currentCharacter._id);
-      console.log(res.data);
+    async showRoll(rollId) {
+      await api.showRoll(rollId);
+
+      // Get roll list
+      const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
+
+      this.characters = _.map(this.characterList, (char) => {
+        return {
+          ...char,
+          rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
+        };
+      });
     },
+    async hideRoll(rollId) {
+      await api.hideRoll(rollId);
+
+      // Get roll list
+      const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
+
+      this.characters = _.map(this.characterList, (char) => {
+        return {
+          ...char,
+          rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
+        };
+      });
+    },
+    async renameRoll(rollId, name) {
+      await api.nameRoll(rollId, name);
+
+      // Get roll list
+      const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
+
+      this.characters = _.map(this.characterList, (char) => {
+        return {
+          ...char,
+          rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
+        };
+      });
+    }
   },
 }
 </script>

@@ -11,6 +11,7 @@ const getRollsForUser = async (req, res) => {
 
     res.json(_.map(rolls, (r) => {
         return {
+            _id: r._id,
             sessionId: r.sessionId,
             characterId: r.characterId,
             dvalue: r.characterId === characterId || r.visible ? r.dvalue: null,
@@ -76,9 +77,19 @@ const nameRoll = async (req, res) => {
     res.json(typeof updatedRoll != undefined);
 };
 
+const deleteRoll = async (req, res) => {
+    const { id: _id } = req.params;
+
+    const deletedRoll = await rollDb.remove(_id);
+    res.json(typeof deletedRoll != undefined);
+}
+
 module.exports = {
     '/roll': {
         post: roll,
+    },
+    '/roll/:id': {
+        delete: deleteRoll,
     },
     '/roll/session/:sessionId/character/:characterId' : {
         get: getRollsForUser,

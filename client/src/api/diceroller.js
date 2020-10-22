@@ -18,7 +18,8 @@ const getSession = async (sessionId) => {
 };
 
 const getRolls = async (sessionId, characterId) => {
-    return await axios.get(`/api/roll/session/${sessionId}/character/${characterId}`);
+    const res = await axios.get(`/api/roll/session/${sessionId}/character/${characterId}`);
+    return res.data;
 };
 
 const rollDie = async (sessionId, characterId, dvalue) => {
@@ -31,11 +32,13 @@ const rollDie = async (sessionId, characterId, dvalue) => {
 };
 
 const showRoll = async (rollId) => {
-    return await axios.post(`/api/roll/${rollId}/show`);
+    const res = await axios.post(`/api/roll/${rollId}/show`);
+    return res.data;
 };
 
 const hideRoll = async (rollId) => {
-    return await axios.delete(`/api/roll/${rollId}/show`);
+    const res = await axios.delete(`/api/roll/${rollId}/show`);
+    return res.data;
 };
 
 const nameRoll = async (rollId, name) => {
@@ -44,6 +47,11 @@ const nameRoll = async (rollId, name) => {
     };
     return await axios.post(`/api/roll/${rollId}/name`, data);
 };
+
+const deleteRoll = async (rollId) => {
+    const res = await axios.delete(`/api/roll/${rollId}`);
+    return res.data;
+}
 
 export default {
     getCharacters,
@@ -54,4 +62,5 @@ export default {
     showRoll,
     hideRoll,
     nameRoll,
+    deleteRoll,
 };
