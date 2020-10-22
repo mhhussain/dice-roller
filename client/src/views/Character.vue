@@ -19,15 +19,23 @@
           </li>
         </ul>
       </div>
+      <el-table :data="characters">
+        <el-table-column prop="name" label="Name" width="180" />
+        <el-table-column prop="inSession" label="In Session" width="180" />
+      </el-table>
   </div>
 </template>
 
 <script>
 import api from '../api/diceroller';
+import { Table, TableColumn } from 'element-ui';
 
 export default {
   name: 'character',
-  components: {},
+  components: {
+    'el-table': Table,
+    'el-table-column': TableColumn,
+  },
   data() {
     return {
       session: {},
