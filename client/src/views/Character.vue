@@ -1,38 +1,27 @@
 <template>
   <div class="character-view">
-      Character View
       <div class="create-character">
-        <input type="text" v-model="newChar.name" placeholder="character name">
-        <button @click="createCharacter">New</button>
+        <el-input class="create-char-input" type="text" v-model="newChar.name" placeholder="create character name" />
+        <el-button class="create-char-button" type="success" @click="createCharacter">New</el-button>
       </div>
-      <div class="character-list">
-        <ul>
-          <li v-for="(character, index) in characters"
-            v-bind:value="character"
-            v-bind:item="character"
-            v-bind:index="index"
-            v-bind:key="index"
-          >
-            {{ character.name }}
-            in session: {{ character.inSession }}
-            <button @click="joinSession(character._id)">Join</button>
-          </li>
-        </ul>
+      <div class="character-table">
+        <el-table :data="characters">
+          <el-table-column prop="name" label="Name" />
+          <el-table-column prop="inSession" label="In Session" width="150" />
+        </el-table>
       </div>
-      <el-table :data="characters">
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="inSession" label="In Session" width="180" />
-      </el-table>
   </div>
 </template>
 
 <script>
 import api from '../api/diceroller';
-import { Table, TableColumn } from 'element-ui';
+import { Input, Button, Table, TableColumn } from 'element-ui';
 
 export default {
   name: 'character',
   components: {
+    'el-input': Input,
+    'el-button': Button,
     'el-table': Table,
     'el-table-column': TableColumn,
   },
@@ -61,6 +50,31 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.character-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 10vw;
+  padding-right: 10vw;
+}
 
+.create-character {
+  display: flex;
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+.create-char-input {
+  width: 250px;
+  margin-right: 10px;
+}
+
+.create-char-button {
+  width: 100px;
+}
+
+.character-table {
+  width: 75vw;
+}
 </style>
