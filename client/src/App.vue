@@ -39,4 +39,8 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.el-main {
+  padding: 0;
+}
 </style>
