@@ -5,7 +5,7 @@
         <el-button class="create-char-button" type="success" @click="createCharacter">New</el-button>
       </div>
       <div class="character-table">
-        <el-table :data="characters">
+        <el-table :data="characters" @row-click="joinSession">
           <el-table-column prop="name" label="Name" />
           <el-table-column prop="inSession" label="In Session" width="150" />
         </el-table>
@@ -43,7 +43,8 @@ export default {
       this.characters = await api.getCharacters(this.session.id);
       this.newChar = {};
     },
-    async joinSession(characterId) {
+    async joinSession(r) {
+      const { _id: characterId } = r;
       this.$router.push(`/session/${this.session.id}/character/${characterId}`);
     }
   }
