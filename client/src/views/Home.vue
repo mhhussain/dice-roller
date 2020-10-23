@@ -4,22 +4,20 @@
       <div class="error" v-if="error">{{ error.message }}</div>
       <div class="session-name">
           <div>
-              <label for="session-name">Session name:</label>
-          </div>
-          <div>
-              <el-input type="text" v-model="session.name" placeholder="name" />
+              <el-input type="text" v-model="session.name" placeholder="session name" />
           </div>
       </div>
       <div class="session-password">
           <div>
-              <label for="session-password">Password:</label>
-          </div>
-          <div>
-              <el-input type="password" v-model="session.password" placeholder="password" />
+              <el-input v-model="session.password" placeholder="session password" show-password />
           </div>
       </div>
-      <el-button type="primary" @click="joinSession">Join Session</el-button>
-      <el-button type="success" @click="createSession">Create Session</el-button>
+      <div class="home-btn">
+          <el-button type="primary" @click="joinSession">Join Session</el-button>
+      </div>
+      <div class="home-btn">
+          <el-button type="success" @click="createSession">Create Session</el-button>
+      </div>
   </div>
 </template>
 
@@ -75,19 +73,20 @@ export default {
 </script>
 
 <style scoped>
-.label {
-  text-align: right;
-  vertical-align: middle;
-  padding: 10px;
+.home-view {
+    display: flex;
+    flex-direction: column;
 }
 
 .el-input {
-  width: 50vw;
-  margin: 5px;
+    min-width: 250px;
+    width: 25vw;
+    margin: 5px;
 }
 
 .el-button {
-  width: 50vw;
-  margin: 5px
+    min-width: 250px;
+    width: 25vw;
+    margin: 5px;
 }
 </style>
