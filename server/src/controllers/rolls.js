@@ -7,9 +7,7 @@ const getRollsForUser = async (req, res) => {
 
     const rolls = await rollDb.find({ sessionId });
 
-    console.log(await rolls);
-
-    res.json(_.map(rolls, (r) => {
+    res.json(_.map(await rolls, (r) => {
         return {
             _id: r._id,
             sessionId: r.sessionId,
