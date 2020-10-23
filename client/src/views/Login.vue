@@ -1,25 +1,19 @@
 <template>
   <div class="login-view">
-      <div class="error" v-if="error">{{ error.message }}</div>
-      <h1>Login</h1>
-      <div>
-        <label for="email">Email:</label>
-      </div>
-      <div>
-        <el-input v-model="email" placeholder="email" />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-      </div>
-      <div>
-        <el-input v-model="password" placeholder="password" show-password />
-      </div>
-      <div class="button">
-        <el-button type="primary" @click="login">Login</el-button>
-      </div>
-      <div class="button">
-        <el-button type="success" @click="register">Register</el-button>
-      </div>
+    <div class="error" v-if="error">{{ error.message }}</div>
+    <h1>Login</h1>
+    <div>
+      <el-input v-model="email" placeholder="email" />
+    </div>
+    <div>
+      <el-input v-model="password" placeholder="password" show-password />
+    </div>
+    <div class="button">
+      <el-button type="primary" @click="login">Login</el-button>
+    </div>
+    <div class="button">
+      <el-button type="success" @click="register">Register</el-button>
+    </div>
   </div>
 </template>
 
@@ -88,24 +82,22 @@ export default {
 </script>
 
 <style scoped>
-.input {
-  width: 25em;
-}
-
-.label {
-  text-align: right;
-  vertical-align: middle;
-  padding: 10px;
+.login-view {
+  display: flex;
+  flex-direction: column;
 }
 
 .el-input {
-  width: 50vw;
+  min-width: 250px;
+  width: 25vw;
   margin: 5px;
 }
 
 .el-button {
-  width: 50vw;
-  margin: 5px
+  min-width: 250px;
+  width: 25vw;
+  margin: 5px;
+  text-transform: uppercase;
 }
 
 </style>
