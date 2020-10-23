@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header class="header" />
+    <Header />
     <el-main>
       <router-view />
     </el-main>
@@ -22,6 +22,11 @@ export default {
 </script>
 
 <style>
+body {
+  padding: 0;
+  margin: 0;
+}
+
 #app {
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -31,12 +36,7 @@ export default {
   background-color: #D8DBE2;
   height: 100vh;
   width: 100vw;
-}
-
-.header {
-  text-align: left;
-  color: #D8DBE2;
-  background-color: #373F51;
-  padding: 10px 0 10px 20vw;
+  display: flex;
+  flex-direction: column;
 }
 </style>
