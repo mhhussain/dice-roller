@@ -4,37 +4,46 @@
         <h1>{{ session.name }}</h1>
       </div>
       <div class="rolls-container">
-        <ul>
-          <li v-for="(character, index) in characters"
+        <div class="characters-container">
+          <div v-for="(character, index) in characters"
           v-bind:value="character"
           v-bind:item="character"
           v-bind:index="index"
           v-bind:key="index"
+          class="character-section"
           >
-            <div class="character-section">
-              <label for="character-name">{{ character.name }}</label>
-              <ul>
-                <li v-for="(roll, rindex) in character.rolls"
+            <div class="characater-row">
+              <div class="character-details">
+                <label for="character-name">{{ character.name }}</label>
+              </div>
+              <div class="character-rolls-container">
+                <div v-for="(roll, rindex) in character.rolls"
                 v-bind:value="roll"
                 v-bind:item="roll"
                 v-bind:index="rindex"
                 v-bind:key="rindex"
                 >
-                  <div class="card">
-                    <i v-if="roll.roll">{{ roll.roll }} / {{ roll.dvalue }}</i>
-                    <i v-if="!roll.roll">-- / --</i>
-                    <input v-if="character._id === currentCharacter._id" v-model="roll.name" type="text"/>
-                    <button v-if="character._id === currentCharacter._id" @click="renameRoll(roll._id, roll.name)">Rename</button>
-                    <button v-if="character._id === currentCharacter._id" @click="deleteRoll(roll._id)">Delete</button>
-                    <div v-if="character._id != currentCharacter._id">{{ roll.name }}</div>
-                  </div>
-                  <button v-if="!roll.visible && character._id === currentCharacter._id" @click="showRoll(roll._id)">Show</button>
-                  <button v-if="roll.visible && character._id === currentCharacter._id" @click="hideRoll(roll._id)">Hide</button>
-                </li>
-              </ul>
+                  <el-card class="roll-card" shadow="hover">
+                    <div slot="header">
+                      {{ roll.name }}
+                    </div>
+                    <div class="roll-value">
+                      <i v-if="roll.roll">{{ roll.roll }} / {{ roll.dvalue }}</i>
+                      <i v-if="!roll.roll">-- / --</i>
+                    </div>
+                    <div class="roll-view">
+                      <i class="el-icon-view" v-if="!roll.visible && character._id === currentCharacter._id" @click="showRoll(roll._id)"></i>
+                      <button v-if="roll.visible && character._id === currentCharacter._id" @click="hideRoll(roll._id)">Hide</button>
+                    </div>
+                    <div class="roll-delete">
+                      <i class="el-icon-delete" v-if="character._id === currentCharacter._id" @click="deleteRoll(roll._id)"></i>
+                    </div>
+                  </el-card>
+                </div>
+              </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
       <div class="roll-btn">
         <el-button type="primary" @click="roll">Roll</el-button>
@@ -45,12 +54,13 @@
 <script>
 import _ from 'lodash';
 import api from '../api/diceroller';
-import { Button } from 'element-ui';
+import { Button, Card } from 'element-ui';
 
 export default {
   name: 'diceroller',
   components: {
     'el-button': Button,
+    'el-card': Card,
   },
   data() {
     return {
@@ -173,5 +183,41 @@ export default {
   height: 85%;
   width: 150px;
   margin: 10px;
+}
+
+.characters-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.characater-row {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.character-details {
+  min-width: 150px;
+  width: 150px;
+  text-align: left;
+}
+
+.character-rolls-container {
+  display: flex;
+  margin-left: 50px;
+}
+
+.roll-card {
+  margin: 2px;
+  width: 200px;
+  height: 200px;
+}
+
+.roll-value {
+  margin-bottom: 50px;
+  font-weight: bold;
+}
+
+.roll-view {
+  margin-bottom: 10px;
 }
 </style>
