@@ -6,11 +6,11 @@
       <div class="rolls-container">
         <div class="characters-container">
           <div v-for="(character, index) in characters"
-          v-bind:value="character"
-          v-bind:item="character"
-          v-bind:index="index"
-          v-bind:key="index"
-          class="character-section"
+            v-bind:value="character"
+            v-bind:item="character"
+            v-bind:index="index"
+            v-bind:key="index"
+            class="character-section"
           >
             <div class="characater-row">
               <div class="character-details">
@@ -18,10 +18,10 @@
               </div>
               <div class="character-rolls-container">
                 <div v-for="(roll, rindex) in character.rolls"
-                v-bind:value="roll"
-                v-bind:item="roll"
-                v-bind:index="rindex"
-                v-bind:key="rindex"
+                  v-bind:value="roll"
+                  v-bind:item="roll"
+                  v-bind:index="rindex"
+                  v-bind:key="rindex"
                 >
                   <el-card class="roll-card" shadow="hover">
                     <div slot="header">
@@ -32,8 +32,8 @@
                       <i v-if="!roll.roll">-- / --</i>
                     </div>
                     <div class="roll-view">
-                      <i class="el-icon-view" v-if="!roll.visible && character._id === currentCharacter._id" @click="showRoll(roll._id)"></i>
-                      <button v-if="roll.visible && character._id === currentCharacter._id" @click="hideRoll(roll._id)">Hide</button>
+                      <el-button type="success" icon="el-icon-view" circle v-if="!roll.visible && character._id === currentCharacter._id" @click="showRoll(roll._id)"></el-button>
+                      <el-button type="danger" icon="el-icon-view" circle v-if="roll.visible && character._id === currentCharacter._id" @click="hideRoll(roll._id)"></el-button>
                     </div>
                     <div class="roll-delete">
                       <i class="el-icon-delete" v-if="character._id === currentCharacter._id" @click="deleteRoll(roll._id)"></i>
@@ -83,7 +83,6 @@ export default {
 
     // Get roll list
     const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
-    console.log(rolls);
 
     this.characters = _.map(this.characterList, (char) => {
       return {
@@ -94,51 +93,31 @@ export default {
   },
   methods: {
     async roll() {
-      const res = await api.rollDie(this.session._id, this.currentCharacter._id, 20)
-      console.log(res.data);
+      await api.rollDie(this.session._id, this.currentCharacter._id, 20)
+      
+      this.getRolls();
     },
     async showRoll(rollId) {
       await api.showRoll(rollId);
 
-      // Get roll list
-      const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
-
-      this.characters = _.map(this.characterList, (char) => {
-        return {
-          ...char,
-          rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
-        };
-      });
+      this.getRolls();
     },
     async hideRoll(rollId) {
       await api.hideRoll(rollId);
 
-      // Get roll list
-      const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
-
-      this.characters = _.map(this.characterList, (char) => {
-        return {
-          ...char,
-          rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
-        };
-      });
+      this.getRolls();
     },
     async renameRoll(rollId, name) {
       await api.nameRoll(rollId, name);
 
-      // Get roll list
-      const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
-
-      this.characters = _.map(this.characterList, (char) => {
-        return {
-          ...char,
-          rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
-        };
-      });
+      this.getRolls()
     },
     async deleteRoll(rollId) {
       await api.deleteRoll(rollId);
 
+      this.getRolls();
+    },
+    async getRolls() {
       // Get roll list
       const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
 
@@ -148,7 +127,7 @@ export default {
           rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
         };
       });
-    },
+    }
   },
 }
 </script>
@@ -213,7 +192,7 @@ export default {
 }
 
 .roll-value {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   font-weight: bold;
 }
 

@@ -7,7 +7,11 @@
       <div class="character-table">
         <el-table :data="characters" @row-click="joinSession">
           <el-table-column prop="name" label="Name" />
-          <el-table-column prop="inSession" label="In Session" width="150" />
+          <el-table-column prop="inSession" label="In Session" width="150">
+            <template slot-scope="scope">
+              <i v-if="scope.row.inSession" class="el-icon-time"></i>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
   </div>
@@ -56,8 +60,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 10vw;
-  padding-right: 10vw;
+  padding-left: 25vw;
+  padding-right: 25vw;
 }
 
 .create-character {
@@ -69,13 +73,15 @@ export default {
 .create-char-input {
   width: 250px;
   margin-right: 10px;
+  margin-top: 10px;
 }
 
 .create-char-button {
   width: 100px;
+  margin-top: 10px;
 }
 
 .character-table {
-  width: 75vw;
+  width: 50vw;
 }
 </style>

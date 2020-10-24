@@ -17,6 +17,7 @@ export default {
     Header,
     'el-main': Main,
   },
+  data() {},
   async created() {}
 }
 </script>
