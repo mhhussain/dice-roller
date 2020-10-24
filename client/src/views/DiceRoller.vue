@@ -24,7 +24,7 @@
                   v-bind:key="rindex"
                 >
                   <el-card class="roll-card" shadow="hover">
-                    <div slot="header">
+                    <div slot="header" v-on:click="toggleRollDialog(roll)">
                       {{ roll.name }}
                     </div>
                     <div class="roll-value">
@@ -48,19 +48,29 @@
       <div class="roll-btn">
         <el-button type="primary" @click="roll">Roll</el-button>
       </div>
+
+      <!-- MODAL -->
+      <el-dialog :title="rollDialog.roll.name"
+        :visible.sync="rollDialog.visible"
+        width="30%"
+        center
+      >
+        {{ rollDialog.roll.roll }} / {{ rollDialog.roll.dvalue }}
+      </el-dialog>
   </div>
 </template>
 
 <script>
 import _ from 'lodash';
 import api from '../api/diceroller';
-import { Button, Card } from 'element-ui';
+import { Button, Card, Dialog } from 'element-ui';
 
 export default {
   name: 'diceroller',
   components: {
     'el-button': Button,
     'el-card': Card,
+    'el-dialog': Dialog,
   },
   data() {
     return {
@@ -69,6 +79,10 @@ export default {
       currentCharacter: {},
       characterList: [],
       characters: [],
+      rollDialog: {
+        visible: false,
+        roll: {}
+      }
     }
   },
   async created() {
@@ -127,6 +141,10 @@ export default {
           rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
         };
       });
+    },
+    async toggleRollDialog(roll) {
+      this.rollDialog.visible = true;
+      this.rollDialog.roll = roll;
     }
   },
 }
