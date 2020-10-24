@@ -13,6 +13,16 @@ const getCharacters = async (req, res) => {
     res.json(characters);
 };
 
+const getAllCharactersInSession = async (req, res) => {
+    const { sessionId } = req.params;
+
+    const characters = await charactersDb.find({
+        sessionId
+    });
+
+    res.json(characters);
+};
+
 const createCharacter = async (req, res) => {
     const { name, sessionId } = req.body;
     const { _id } = req.user;
@@ -40,6 +50,9 @@ const createCharacter = async (req, res) => {
 module.exports = {
     '/character/:sessionId': {
         get: getCharacters,
+    },
+    '/characters/:sessionId': {
+        get: getAllCharactersInSession,
     },
     '/character': {
         post: createCharacter,

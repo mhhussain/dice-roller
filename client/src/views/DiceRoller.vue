@@ -92,18 +92,10 @@ export default {
     this.currentCharacter._id = characterId;
 
     // Get character list
-    const chars = await api.getCharacters(this.session._id);
+    const chars = await api.getAllCharacters(this.session._id);
     this.characterList = chars;
 
-    // Get roll list
-    const rolls = await api.getRolls(this.session._id, this.currentCharacter._id);
-
-    this.characters = _.map(this.characterList, (char) => {
-      return {
-        ...char,
-        rolls: _.filter(rolls, (roll) => { return roll.characterId === char._id; })
-      };
-    });
+    this.getRolls();
   },
   methods: {
     async roll() {

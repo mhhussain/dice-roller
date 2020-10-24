@@ -5,6 +5,11 @@ const getCharacters = async (sessionId) => {
     return res.data;
 };
 
+const getAllCharacters = async (sessionId) => {
+    const res = await axios.get(`/api/characters/${sessionId}`);
+    return res.data;
+};
+
 const createCharacter = async (name, sessionId) => {
     const data = {
         name,
@@ -55,6 +60,7 @@ const deleteRoll = async (rollId) => {
 
 export default {
     getCharacters,
+    getAllCharacters,
     createCharacter,
     getSession,
     getRolls,
