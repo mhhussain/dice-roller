@@ -37,7 +37,8 @@ export default {
   },
   async created() {
     if (localStorage.user) {
-      this.$router.replace({ name: 'home' });
+      //this.$router.replace({ name: 'home' });
+      localStorage.removeItem('user');
     }
   },
   methods: {

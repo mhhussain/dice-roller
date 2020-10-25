@@ -2,6 +2,7 @@
   <div class="home-view">
       <h1>HOME</h1>
       <el-button type="success" @click="navigateSession">Find or Create Session</el-button>
+      <h2>Characters:</h2>
       <div class="character-table">
         <el-table :data="characters" @row-click="joinSession">
           <el-table-column prop="name" label="Name" />
@@ -36,15 +37,26 @@ export default {
     },
     methods: {
         navigateSession() {
-            this.$router.push({ name: 'findcreatesession' });
+          this.$router.push({ name: 'findcreatesession' });
         },
-        joinSession() {
-
+        joinSession(r) {
+          const { _id: characterId, sessionId } = r;
+          this.$router.push(`/session/${sessionId}/character/${characterId}`);
         }
     }
 }
 </script>
 
 <style scoped>
+.home-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 25vw;
+  padding-right: 25vw;
+}
 
+.character-table {
+  width: 50vw;
+}
 </style>
