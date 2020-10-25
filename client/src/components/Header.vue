@@ -1,15 +1,30 @@
 <template>
   <div class="header-component">
-    <h2 class="header-label">Dice Roller</h2>
+    <router-link to="/" class="header-label">Dice Roller</router-link>
+    <p v-if="user.email">{{ user.email }}</p>
+    <el-button v-if="user.email" type="danger" @click="logout">Logout</el-button>
   </div>
 </template>
 
 <script>
+import api from '../api/diceroller';
+import { Button } from 'element-ui';
+
 export default {
     name: 'Header',
-    components: {},
+    props: ['user'],
+    components: {
+      'el-button': Button,
+    },
     async created() {},
-    methods: {}
+    methods: {
+      async logout() {
+        await api.logout();
+        localStorage.removeItem('user');
+        this.$emit('userLoggedOut', null);
+        this.$router.replace({ name: 'login' });
+      }
+    }
 }
 </script>
 

@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+const logout = async () => {
+    const res = await axios.post(`/auth/logout`);
+    return res.data;
+};
+
 const getCharacters = async (sessionId) => {
     const res = await axios.get(`/api/character/${sessionId}`);
     return res.data;
@@ -64,6 +69,7 @@ const getUser = async () => {
 };
 
 export default {
+    logout,
     getCharacters,
     getAllCharacters,
     createCharacter,

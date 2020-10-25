@@ -56,6 +56,7 @@ export default {
           if(res.status === 200) {
             const user = await api.getUser();
             localStorage.user = JSON.stringify(user);
+            this.$emit('userLoggedIn', user);
             this.$router.replace({ name: 'home' });
           }
         })
