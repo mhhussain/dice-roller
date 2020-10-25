@@ -7,31 +7,29 @@
         <CharacterList :characters="characters" :currentCharacter="currentCharacter" @rollUpdated="getRolls" />
       </div>
       <div class="roll-btn">
-        <el-button type="primary" @click="roll">Roll</el-button>
+        <el-button type="primary" @click="roll(2)">Roll 2</el-button>
+        <el-button type="primary" @click="roll(3)">Roll 3</el-button>
+        <el-button type="primary" @click="roll(4)">Roll 4</el-button>
+        <el-button type="primary" @click="roll(5)">Roll 5</el-button>
+        <el-button type="primary" @click="roll(6)">Roll 6</el-button>
+        <el-button type="primary" @click="roll(8)">Roll 8</el-button>
+        <el-button type="primary" @click="roll(10)">Roll 10</el-button>
+        <el-button type="primary" @click="roll(12)">Roll 12</el-button>
+        <el-button type="primary" @click="roll(20)">Roll 20</el-button>
       </div>
-
-      <!-- MODAL -->
-      <el-dialog :title="rollDialog.roll.name"
-        :visible.sync="rollDialog.visible"
-        width="30%"
-        center
-      >
-        {{ rollDialog.roll.roll }} / {{ rollDialog.roll.dvalue }}
-      </el-dialog>
   </div>
 </template>
 
 <script>
 import _ from 'lodash';
 import api from '../api/diceroller';
-import { Button, Dialog } from 'element-ui';
+import { Button } from 'element-ui';
 import CharacterList from '../components/CharacterList';
 
 export default {
   name: 'diceroller',
   components: {
     'el-button': Button,
-    'el-dialog': Dialog,
     CharacterList,
   },
   data() {
@@ -60,8 +58,8 @@ export default {
     this.getRolls();
   },
   methods: {
-    async roll() {
-      await api.rollDie(this.session._id, this.currentCharacter._id, 20)
+    async roll(val) {
+      await api.rollDie(this.session._id, this.currentCharacter._id, val)
       
       this.getRolls();
     },
@@ -110,10 +108,7 @@ export default {
 }
 
 .roll-btn .el-button {
-  float: right;
-  height: 85%;
-  width: 150px;
-  margin: 10px;
+  margin-top: 10px;
 }
 
 </style>
