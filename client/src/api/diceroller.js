@@ -5,6 +5,11 @@ const logout = async () => {
     return res.data;
 };
 
+const getUserCharacters = async () => {
+    const res = await axios.get(`/api/user/character`);
+    return res.data;
+};
+
 const getCharacters = async (sessionId) => {
     const res = await axios.get(`/api/character/${sessionId}`);
     return res.data;
@@ -70,6 +75,7 @@ const getUser = async () => {
 
 export default {
     logout,
+    getUserCharacters,
     getCharacters,
     getAllCharacters,
     createCharacter,
