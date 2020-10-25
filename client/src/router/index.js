@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import LoginView from '../views/Login.vue';
 import HomeView from '../views/Home.vue';
+import FindCreateSessionView from '../views/FindCreateSession.vue';
 import CharacterView from '../views/Character.vue';
 import DiceRollerView from '../views/DiceRoller.vue';
 
@@ -21,6 +22,12 @@ const routes = [
         path: '/',
         name: 'home',
         component: HomeView,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/session',
+        name: 'findcreatesession',
+        component: FindCreateSessionView,
         meta: { requiresAuth: true },
     },
     {
