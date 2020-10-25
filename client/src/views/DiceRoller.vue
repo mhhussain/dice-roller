@@ -23,22 +23,7 @@
                   v-bind:index="rindex"
                   v-bind:key="rindex"
                 >
-                  <el-card class="roll-card" shadow="hover">
-                    <div slot="header" v-on:click="toggleRollDialog(roll)">
-                      {{ roll.name }}
-                    </div>
-                    <div class="roll-value">
-                      <i v-if="roll.roll">{{ roll.roll }} / {{ roll.dvalue }}</i>
-                      <i v-if="!roll.roll">-- / --</i>
-                    </div>
-                    <div class="roll-view">
-                      <el-button type="success" icon="el-icon-view" circle v-if="!roll.visible && character._id === currentCharacter._id" @click="showRoll(roll._id)"></el-button>
-                      <el-button type="danger" icon="el-icon-view" circle v-if="roll.visible && character._id === currentCharacter._id" @click="hideRoll(roll._id)"></el-button>
-                    </div>
-                    <div class="roll-delete">
-                      <i class="el-icon-delete" v-if="character._id === currentCharacter._id" @click="deleteRoll(roll._id)"></i>
-                    </div>
-                  </el-card>
+                  <Roll :roll="roll" :controlsVisible="character._id === currentCharacter._id" @rollUpdated="getRolls"/>
                 </div>
               </div>
             </div>
@@ -63,14 +48,15 @@
 <script>
 import _ from 'lodash';
 import api from '../api/diceroller';
-import { Button, Card, Dialog } from 'element-ui';
+import { Button, Dialog } from 'element-ui';
+import Roll from '../components/Roll';
 
 export default {
   name: 'diceroller',
   components: {
     'el-button': Button,
-    'el-card': Card,
     'el-dialog': Dialog,
+    Roll,
   },
   data() {
     return {
@@ -101,26 +87,6 @@ export default {
     async roll() {
       await api.rollDie(this.session._id, this.currentCharacter._id, 20)
       
-      this.getRolls();
-    },
-    async showRoll(rollId) {
-      await api.showRoll(rollId);
-
-      this.getRolls();
-    },
-    async hideRoll(rollId) {
-      await api.hideRoll(rollId);
-
-      this.getRolls();
-    },
-    async renameRoll(rollId, name) {
-      await api.nameRoll(rollId, name);
-
-      this.getRolls()
-    },
-    async deleteRoll(rollId) {
-      await api.deleteRoll(rollId);
-
       this.getRolls();
     },
     async getRolls() {
@@ -193,20 +159,5 @@ export default {
 .character-rolls-container {
   display: flex;
   margin-left: 50px;
-}
-
-.roll-card {
-  margin: 2px;
-  width: 200px;
-  height: 200px;
-}
-
-.roll-value {
-  margin-bottom: 30px;
-  font-weight: bold;
-}
-
-.roll-view {
-  margin-bottom: 10px;
 }
 </style>
