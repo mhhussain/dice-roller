@@ -56,7 +56,12 @@ const nameRoll = async (rollId, name) => {
 const deleteRoll = async (rollId) => {
     const res = await axios.delete(`/api/roll/${rollId}`);
     return res.data;
-}
+};
+
+const getUser = async () => {
+    const res = await axios.get(`/api/user`);
+    return res.data;
+};
 
 export default {
     getCharacters,
@@ -69,4 +74,5 @@ export default {
     hideRoll,
     nameRoll,
     deleteRoll,
+    getUser,
 };

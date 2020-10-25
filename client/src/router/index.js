@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import axios from 'axios';
 import LoginView from '../views/Login.vue';
 import HomeView from '../views/Home.vue';
 import CharacterView from '../views/Character.vue';
@@ -45,13 +44,12 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some(rec => rec.meta.requiresAuth);
     if(requiresAuth) {
-        axios.get('/auth/ping')
-            .then(() => {
-                next();
-            })
-            .catch(() => {
-                next('/login');
-            });
+        const user = localStorage.getItem('user');
+        if (user) {
+            next()
+        } else {
+            next('/login');
+        }
     } else {
         next();
     }

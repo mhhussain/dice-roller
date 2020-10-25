@@ -19,6 +19,7 @@
 
 <script>
 import axios from 'axios';
+import api from '../api/diceroller';
 import { Input, Button } from 'element-ui';
 
 export default {
@@ -34,9 +35,13 @@ export default {
       password: '',
     };
   },
-  async created() {},
+  async created() {
+    if (localStorage.user) {
+      this.$router.replace({ name: 'home' });
+    }
+  },
   methods: {
-    login() {
+    async login() {
       if (!this.email || !this.password) {
         return;
       }
@@ -47,8 +52,10 @@ export default {
       };
 
       axios.post('/auth/login', data)
-        .then((res) => {
+        .then(async (res) => {
           if(res.status === 200) {
+            const user = await api.getUser();
+            localStorage.user = JSON.stringify(user);
             this.$router.replace({ name: 'home' });
           }
         })
