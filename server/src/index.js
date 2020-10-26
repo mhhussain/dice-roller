@@ -1,4 +1,6 @@
-const e = require('express');
+const feathers = require('@feathersjs/feathers');
+const e = require('@feathersjs/express');
+const io = require('@feathersjs/socketio');
 const session = require('express-session');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -8,9 +10,11 @@ const _ = require('lodash');
 const logger = require('./logger').logger('app');
 const auth = require('./auth');
 
+const RollService = require('./rts/RollService');
+
 const configs = require('./configs');
 
-let app = e();
+let app = e(feathers());
 app.use(cors());
 app.use(helmet());
 app.use(morgan(configs.MORGAN_FORMAT));
@@ -22,6 +26,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(e.json());
+app.configure(e.rest());
+app.configure(io());
 
 app.get('/ping', (req, res) => {
     res.json({ message: 'pong' });
@@ -35,6 +41,11 @@ app.use('/auth', auth.router(passport));
 // Routing controllers can be found at /routes/index.js
 const routes = require('./routes');
 app.use('/api', auth.isAuth, routes)
+
+// Setup socket
+app.use('/io', auth.isAuth, new RollService());
+app.on('connection', conn => app.channel('everybody').join(conn));
+app.publish(data => app.channel('everybody'));
 
 // Handle static front-end client for PROD
 if (process.env.NODE_ENV === 'production') {

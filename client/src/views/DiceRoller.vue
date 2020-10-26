@@ -23,6 +23,8 @@
 <script>
 import _ from 'lodash';
 import api from '../api/diceroller';
+import feathers from '@feathersjs/client';
+import io from 'socket.io-client';
 import { Button } from 'element-ui';
 import CharacterList from '../components/CharacterList';
 
@@ -50,6 +52,15 @@ export default {
     const res = await api.getSession(sessionId);
     this.session = res.data[0];
     this.currentCharacter._id = characterId;
+
+    const socket = io('/io');
+    const app = feathers();
+
+    app.configure(feathers.socketio(socket));
+    const rolls = await app.service('rolls').find(sessionId);
+    console.log(rolls);
+
+    //app.service('rolls').on('created', () => {});
 
     // Get character list
     const chars = await api.getAllCharacters(this.session._id);

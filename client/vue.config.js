@@ -10,6 +10,9 @@ module.exports = {
       '/auth': {
         target: 'http://localhost:5001',
       },
+      '/io': {
+        target: 'http://localhost:5001',
+      },
     },
   },
 };
