@@ -1,27 +1,31 @@
 <template>
   <div class="header-component">
-    <router-link to="/" class="header-label">Dice Roller</router-link>
+    <router-link to="/" class="header-label">{{ appName }}</router-link>
     <p v-if="user.email">{{ user.email }}</p>
     <el-button v-if="user.email" type="danger" @click="logout">Logout</el-button>
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import api from '../api/diceroller';
 import { Button } from 'element-ui';
 
 export default {
     name: 'Header',
-    props: ['user'],
     components: {
       'el-button': Button,
     },
+    computed: {
+      ...mapState(['appName', 'user']),
+    },
     async created() {},
     methods: {
+      ...mapActions(['userLogout']),
       async logout() {
         await api.logout();
         localStorage.removeItem('user');
-        this.$emit('userLoggedOut', null);
+        this.userLogout();
         this.$router.replace({ name: 'login' });
       }
     }

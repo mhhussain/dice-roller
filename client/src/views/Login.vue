@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import axios from 'axios';
 import api from '../api/diceroller';
 import { Input, Button } from 'element-ui';
@@ -42,6 +43,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['userLogin']),
     async login() {
       if (!this.email || !this.password) {
         return;
@@ -57,7 +59,7 @@ export default {
           if(res.status === 200) {
             const user = await api.getUser();
             localStorage.user = JSON.stringify(user);
-            this.$emit('userLoggedIn', user);
+            this.userLogin(user);
             this.$router.replace({ name: 'home' });
           }
         })

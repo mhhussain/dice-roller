@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Header :user="user" @userLoggedOut="userLogout" />
+    <Header />
     <el-main>
-      <router-view @userLoggedIn="userLogin" />
+      <router-view />
     </el-main>
   </div>
 </template>
@@ -17,20 +17,8 @@ export default {
     Header,
     'el-main': Main,
   },
-  data() {
-    return {
-      user: {},
-    }
-  },
   async created() {},
-  methods: {
-    async userLogin(user) {
-      this.user = user;
-    },
-    async userLogout() {
-      this.user = {};
-    }
-  }
+  methods: {}
 }
 </script>
 
