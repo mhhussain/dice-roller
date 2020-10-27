@@ -1,5 +1,28 @@
 import axios from 'axios';
 
+// Auth
+
+const f = {
+    login: {},
+    logout: {},
+    getUsers: {},
+    getUser: {},
+    createUser: {},
+    patchUser: {},
+    getCharacters: {},
+    getCharacter: {},
+    createCharacter: {},
+    patchCharacters: {},
+    getSessions: {},
+    getSession: {},
+    createSession: {},
+    patchSession: {},
+    getRolls: {},
+    getRoll: {},
+    createRoll: {},
+    patchRoll: {},
+};f;
+
 const logout = async () => {
     const res = await axios.post(`/auth/logout`);
     return res.data;
