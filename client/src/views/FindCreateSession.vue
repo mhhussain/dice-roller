@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import api from '../api/diceroller';
 import { Input, Button } from 'element-ui';
 
 export default {
@@ -42,31 +42,21 @@ export default {
     },
     async created() {},
     methods: {
-        joinSession() {
+        async joinSession() {
             const data = {
                 name: this.session.name,
                 password: this.session.password,
             };
-            axios.post('/api/session/search', data)
-                .then((res) => {
-                    if (res.data.length > 0) {
-                        const session = res.data[0];
-                        this.$router.push(`/session/${session._id}/character`);
-                    } else {
-                        this.error = { message: 'no session found' };
-                    }
-                });
+            const session = await api.searchSession(data);
+            this.$router.push(`/session/${session._id}/character`);
         },
-        createSession() {
+        async createSession() {
             const data = {
                 name: this.session.name,
                 password: this.session.password,
             };
-            axios.post('/api/session', data)
-                .then((res) => {
-                    const { _id: id } = res.data;
-                    this.$router.push(`/session/${id}/character`);
-                });
+            const { _id: id } = await api.createSession(data);
+            this.$router.push(`/session/${id}/character`);
         },
     }
 }

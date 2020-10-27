@@ -1,27 +1,10 @@
 import axios from 'axios';
 
 // Auth
-
-const f = {
-    login: {},
-    logout: {},
-    getUsers: {},
-    getUser: {},
-    createUser: {},
-    patchUser: {},
-    getCharacters: {},
-    getCharacter: {},
-    createCharacter: {},
-    patchCharacters: {},
-    getSessions: {},
-    getSession: {},
-    createSession: {},
-    patchSession: {},
-    getRolls: {},
-    getRoll: {},
-    createRoll: {},
-    patchRoll: {},
-};f;
+const login = async ({ email, password }) => {
+    const res = await axios.post(`/auth/login`, { email, password });
+    return res;
+};
 
 const logout = async () => {
     const res = await axios.post(`/auth/logout`);
@@ -53,6 +36,16 @@ const createCharacter = async (name, sessionId) => {
 
 const getSession = async (sessionId) => {
     return await axios.get(`/api/session/${sessionId}`);
+};
+
+const searchSession = async ({ name, password }) => {
+    const res = await axios.post(`/api/session/search`, { name, password });
+    return res.data[0];
+};
+
+const createSession = async ({ name, password }) => {
+    const res = await axios.post(`/api/session`, { name, password });
+    return res.data;
 };
 
 const getRolls = async (sessionId, characterId) => {
@@ -97,12 +90,15 @@ const getUser = async () => {
 };
 
 export default {
+    login,
     logout,
     getUserCharacters,
     getCharacters,
     getAllCharacters,
     createCharacter,
     getSession,
+    searchSession,
+    createSession,
     getRolls,
     rollDie,
     showRoll,
