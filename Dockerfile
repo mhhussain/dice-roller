@@ -8,4 +8,4 @@ ENV NODE_ENV=production
 ENV PORT=8080
 ENV MORGAN_FORMAT=tiny
 
-ENTRYPOINT ["node", "src/index.js"]
+ENTRYPOINT ["npm", "run", "start"]
