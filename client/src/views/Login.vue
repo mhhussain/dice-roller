@@ -19,7 +19,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import api from '../api/diceroller';
 import { Input, Button } from 'element-ui';
 
 export default {
@@ -37,29 +36,26 @@ export default {
   },
   async created() {
     if (localStorage.user) {
-      //this.$router.replace({ name: 'home' });
-      localStorage.removeItem('user');
+      localStorage.removeItem('feathers-jwt');
     }
   },
   methods: {
     ...mapActions(['userLogin']),
+    ...mapActions('auth', ['authenticate']),
     async login() {
       if (!this.email || !this.password) {
         return;
       }
 
       const data = {
+        strategy: 'local',
         email: this.email,
         password: this.password,
       };
 
-      const res = await api.login(data);
-      if(res.status === 200) {
-        const user = await api.getUser();
-        localStorage.user = JSON.stringify(user);
-        this.userLogin(user);
-        this.$router.replace({ name: 'home' });
-      }
+      const user = await this.authenticate(data);
+      this.userLogin(user.user);
+      this.$router.push({ name: 'home' });
     },
     register() {
       if (!this.email || !this.password) {

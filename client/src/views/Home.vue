@@ -17,7 +17,9 @@
 </template>
 
 <script>
-import api from '../api/diceroller';
+//import { models } from 'feathers-vuex';
+import { mapActions, mapGetters } from 'vuex';
+
 import { Button, Table, TableColumn } from 'element-ui';
 
 export default {
@@ -27,22 +29,24 @@ export default {
         'el-table': Table,
         'el-table-column': TableColumn,
     },
-    data() {
-        return {
-            characters: []
-        };
-    },
     async created() {
-        this.characters = await api.getUserCharacters();
+      this.findChars({ query: {} });
+    },
+    computed: {
+      ...mapGetters('characters', { findCharsInStore: 'find' }),
+      characters() {
+        return this.findCharsInStore().data;
+      }
     },
     methods: {
-        navigateSession() {
-          this.$router.push({ name: 'findcreatesession' });
-        },
-        joinSession(r) {
-          const { _id: characterId, sessionId } = r;
-          this.$router.push(`/session/${sessionId}/character/${characterId}`);
-        }
+      ...mapActions('characters', { findChars: 'find' }),
+      navigateSession() {
+        this.$router.push({ name: 'findcreatesession' });
+      },
+      joinSession(r) {
+        const { _id: characterId, sessionId } = r;
+        this.$router.push(`/session/${sessionId}/character/${characterId}`);
+      }
     }
 }
 </script>

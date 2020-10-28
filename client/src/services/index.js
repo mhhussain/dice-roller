@@ -1,5 +1,10 @@
-import auth from './auth';
+import userService from './users';
 
+export default [
+    userService,
+];
+
+/*
 const f = {
     login: {},
     logout: {},
@@ -20,7 +25,4 @@ const f = {
     createRoll: {},
     patchRoll: {},
 };f;
-
-export default {
-    auth,
-};
+*/

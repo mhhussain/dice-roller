@@ -51,7 +51,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some(rec => rec.meta.requiresAuth);
     if(requiresAuth) {
-        const user = localStorage.getItem('user');
+        const user = localStorage.getItem('feathers-jwt');
         if (user) {
             next()
         } else {
