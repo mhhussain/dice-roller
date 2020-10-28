@@ -8,8 +8,4 @@ exports.Characters = class Characters extends Service {
       this.Model = db.collection('characters');
     });
   }
-
-  find(params) {
-    return super.find(params);
-  }
 };

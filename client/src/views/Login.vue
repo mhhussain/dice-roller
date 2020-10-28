@@ -42,6 +42,7 @@ export default {
   methods: {
     ...mapActions(['userLogin']),
     ...mapActions('auth', ['authenticate']),
+    ...mapActions('users', { createUser: 'create' }),
     async login() {
       if (!this.email || !this.password) {
         return;
@@ -57,26 +58,20 @@ export default {
       this.userLogin(user.user);
       this.$router.push({ name: 'home' });
     },
-    register() {
+    async register() {
       if (!this.email || !this.password) {
         return;
       }
+      const newUser = {
+        email: this.email,
+        password: this.password,
+      };
 
-      fetch('/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password
-        })
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          this.$router.replace({ name: 'home' });
-        }
-      });
+      const u = await this.createUser(newUser);
+
+      console.dir('feiojfe');
+      console.dir(u);
+      this.$router.replace({ name: 'home' });
     }
   }
 }

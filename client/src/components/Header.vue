@@ -2,13 +2,12 @@
   <div class="header-component">
     <router-link to="/" class="header-label">{{ appName }}</router-link>
     <p v-if="user.email">{{ user.email }}</p>
-    <el-button v-if="user.email" type="danger" @click="logout">Logout</el-button>
+    <el-button v-if="user.email" type="danger" @click="logoutButon">Logout</el-button>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import api from '../api/diceroller';
 import { Button } from 'element-ui';
 
 export default {
@@ -22,10 +21,10 @@ export default {
     async created() {},
     methods: {
       ...mapActions(['userLogout']),
-      async logout() {
-        await api.logout();
-        localStorage.removeItem('user');
-        this.userLogout();
+      ...mapActions('auth', ['logout']),
+      async logoutButon() {
+        await this.logout();
+        await this.userLogout();
         this.$router.replace({ name: 'login' });
       }
     }

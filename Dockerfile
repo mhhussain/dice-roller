@@ -2,7 +2,7 @@ FROM node:latest
 
 WORKDIR /home/node/app
 
-COPY ./server .
+COPY ./server-rts .
 
 ENV NODE_ENV=production
 ENV PORT=8080
