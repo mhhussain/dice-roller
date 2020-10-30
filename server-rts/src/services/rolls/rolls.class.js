@@ -3,7 +3,7 @@ const { Service } = require('feathers-mongodb');
 exports.Rolls = class Rolls extends Service {
   constructor(options, app) {
     super(options);
-    
+
     app.get('mongoClient').then(db => {
       this.Model = db.collection('rolls');
     });
@@ -20,6 +20,7 @@ exports.Rolls = class Rolls extends Service {
       visible: false,
       userId: data.userId,
     };
+    console.dir(data);
 
     return super.create(newRoll, params);
   }
@@ -32,5 +33,23 @@ exports.Rolls = class Rolls extends Service {
     };
 
     return super.patch(id, patchRoll, params);
+  }
+
+  async find(params) {
+    const { user } = params;
+    const rolls = await super.find(params);
+
+    return await rolls.data.map(r => {
+      return {
+        sessionId: r.sessionId,
+        characterId: r.characterId,
+        userId: r.userId.toString(),
+        dvalue: r.userId.toString() === user._id.toString() || r.visible ? r.dvalue : null,
+        roll: r.userId.toString() === user._id.toString() || r.visible ? r.roll : null,
+        name: r.name,
+        rollTime: r.rollTime,
+        visible: r.visible,
+      };
+    });
   }
 };

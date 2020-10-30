@@ -7,8 +7,8 @@ const verifyUser = require('../../hooks/verify-user');
 module.exports = {
   before: {
     all: [authenticate('jwt')],
-    find: [],
-    get: [],
+    find: [authenticate('jwt')],
+    get: [authenticate('jwt')],
     create: [addUserId()],
     update: [verifyUser()],
     patch: [verifyUser()],
