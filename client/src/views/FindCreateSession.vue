@@ -13,16 +13,16 @@
           </div>
       </div>
       <div class="home-btn">
-          <el-button type="primary" @click="joinSession">Join Session</el-button>
+          <el-button type="primary" @click="onJoinSession">Join Session</el-button>
       </div>
       <div class="home-btn">
-          <el-button type="success" @click="createSession">Create Session</el-button>
+          <el-button type="success" @click="onCreateSession">Create Session</el-button>
       </div>
   </div>
 </template>
 
 <script>
-import api from '../api/diceroller';
+import { mapActions } from 'vuex';
 import { Input, Button } from 'element-ui';
 
 export default {
@@ -42,21 +42,29 @@ export default {
     },
     async created() {},
     methods: {
-        async joinSession() {
+        ...mapActions('sessions', { findSessions: 'find' }),
+        ...mapActions('sessions', { createSession: 'create' }),
+        async onJoinSession() {
             const data = {
                 name: this.session.name,
                 password: this.session.password,
             };
-            const session = await api.searchSession(data);
-            this.$router.push(`/session/${session._id}/character`);
+            const session = await this.findSessions({
+                query: data
+            });
+
+            this.$router.push(`/session/${session.data[0]._id}/character`);
         },
-        async createSession() {
+        async onCreateSession() {
             const data = {
                 name: this.session.name,
                 password: this.session.password,
+                status: 'open',
             };
-            const { _id: id } = await api.createSession(data);
-            this.$router.push(`/session/${id}/character`);
+
+            const session = await this.createSession(data);
+
+            this.$router.push(`/session/${session._id}/character`);
         },
     }
 }
