@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import api from '../api/diceroller';
+import { mapActions, mapGetters } from 'vuex';
 import { Input, Button, Table, TableColumn } from 'element-ui';
 
 export default {
@@ -32,19 +32,41 @@ export default {
   data() {
     return {
       session: {},
-      characters: [],
       newChar: {}
     };
   },
   async created() {
     const { id: sessionId } = this.$route.params;
     this.session.id = sessionId;
-    this.characters = await api.getCharacters(this.session.id);
+    this.findChars({
+      query: {
+        sessionId: this.session.id,
+      }
+    });
+  },
+  computed: {
+    ...mapGetters('characters', { findCharsInStore: 'find' }),
+    characters() {
+      return this.findCharsInStore({
+        query: {
+          sessionId: this.session.id,
+        }
+      }).data;
+    }
   },
   methods: {
+    ...mapActions('characters', { findChars: 'find' }),
+    ...mapActions('characters', { createChar: 'create' }),
     async createCharacter() {
-      await api.createCharacter(this.newChar.name, this.session.id);
-      this.characters = await api.getCharacters(this.session.id);
+      const newChar = {
+        name: this.newChar.name,
+        sessionId: this.session.id,
+        level: 1,
+        class: 'none',
+        inSession: true
+      };
+
+      await this.createChar(newChar);
       this.newChar = {};
     },
     async joinSession(r) {
