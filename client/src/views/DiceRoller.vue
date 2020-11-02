@@ -3,8 +3,11 @@
       <div class="title">
         <h1>{{ session.name }}</h1>
       </div>
+      <pre>
+        {{ rolls }}
+      </pre>
       <div class="rolls-container">
-        <CharacterList :characters="characters" :currentCharacter="currentCharacter" />
+        <CharacterList :characters="characters" :currentCharacter="currentCharacter" :rolls="rolls" />
       </div>
       <div class="roll-btn">
         <el-button type="primary" @click="rollDie(2)">Roll 2</el-button>
@@ -22,7 +25,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import _ from 'lodash';
 import { Button } from 'element-ui';
 import CharacterList from '../components/CharacterList';
 
@@ -37,10 +39,6 @@ export default {
       error: '',
       session: {},
       currentCharacter: {},
-      rollDialog: {
-        visible: false,
-        roll: {}
-      }
     }
   },
   async created() {
@@ -53,43 +51,34 @@ export default {
         sessionId: this.session._id,
       }
     });
-
-    const a = await this.findRolls({
+    
+    await this.findRolls({
       query: {
         sessionId: this.session._id,
       }
     });
 
-    console.log(a);
+    console.log('feijo');
+    console.log(this.session);
+    console.log(this.characters);
+    console.log(this.rolls);
   },
   computed: {
     ...mapGetters('characters', { findCharsInStore: 'find' }),
     ...mapGetters('rolls', { findRollsInStore: 'find' }),
-    characterList() {
+    rolls() {
+      return this.findRollsInStore({
+        query: {
+          sessionId: this.session._id,
+        }
+      }).data;
+    },
+    characters() {
       return this.findCharsInStore({
         query: {
           sessionId: this.session._id,
         }
       }).data;
-    },
-    rolls() {
-      const a = this.findRollsInStore({
-        query: {
-          sessionId: this.session._id,
-        }
-      }).data;
-
-      console.dir(a);
-      console.dir(this.session._id);
-      return a;
-    },
-    characters() {
-      return _.map(this.characterList, (char) => {
-        return {
-          ...char,
-          rolls: _.filter(this.rolls, (roll) => { return roll.characterId === char._id; })
-        };
-      });
     },
   },
   methods: {
@@ -106,10 +95,6 @@ export default {
       
       await this.createRoll(newRoll);
     },
-    async toggleRollDialog(roll) {
-      this.rollDialog.visible = true;
-      this.rollDialog.roll = roll;
-    }
   },
 }
 </script>

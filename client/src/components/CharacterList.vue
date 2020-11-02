@@ -12,13 +12,13 @@
                     <label for="character-name">{{ character.name }}</label>
                 </div>
                 <div class="character-rolls-container">
-                    <div v-for="(roll, rindex) in character.rolls"
+                    <div v-for="(roll, rindex) in rollsForCharacter(character._id)"
                         v-bind:value="roll"
                         v-bind:item="roll"
                         v-bind:index="rindex"
                         v-bind:key="rindex"
                     >
-                        <Roll :roll="roll" :controlsVisible="character._id === currentCharacter._id" @rollUpdated="rollUpdated" />
+                        <Roll :roll="roll" :controlsVisible="character._id === currentCharacter._id" />
                     </div>
                 </div>
             </div>
@@ -27,19 +27,22 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import Roll from '../components/Roll';
 
 export default {
     name: 'CharacterList',
-    props: ['characters', 'currentCharacter'],
+    props: ['characters', 'currentCharacter', 'rolls'],
     components: {
         Roll,
     },
-    async created() {},
+    data: () => ({
+        session: {},
+    }),
     methods: {
-        rollUpdated() {
-            this.$emit('rollUpdated', null);
-        }
+        async rollsForCharacter(characterId) {
+            return await _.filter(this.rolls, (r) => r.characterId === characterId);
+        },
     }
 }
 </script>

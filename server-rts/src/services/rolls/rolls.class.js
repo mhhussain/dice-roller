@@ -34,11 +34,11 @@ exports.Rolls = class Rolls extends Service {
     return super.patch(id, patchRoll, params);
   }
 
-  async find(params) {
+  /*async find(params) {
     const { user } = params;
     const rolls = await super.find(params);
 
-    return await rolls.data.map(r => {
+    const a = await rolls.data.map(r => {
       return {
         sessionId: r.sessionId,
         characterId: r.characterId,
@@ -50,5 +50,7 @@ exports.Rolls = class Rolls extends Service {
         visible: r.visible,
       };
     });
-  }
+
+    return a;
+  }*/
 };
