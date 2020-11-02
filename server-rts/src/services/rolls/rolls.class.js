@@ -20,7 +20,6 @@ exports.Rolls = class Rolls extends Service {
       visible: false,
       userId: data.userId,
     };
-    console.dir(data);
 
     return super.create(newRoll, params);
   }

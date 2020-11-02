@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '../store';
 import LoginView from '../views/Login.vue';
 import HomeView from '../views/Home.vue';
 import FindCreateSessionView from '../views/FindCreateSession.vue';
@@ -50,10 +51,10 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some(rec => rec.meta.requiresAuth);
+    const { isAuthorized } = store.state;
     if(requiresAuth) {
-        const user = localStorage.getItem('feathers-jwt');
-        if (user) {
-            next()
+        if (isAuthorized) {
+            next();
         } else {
             next('/login');
         }
