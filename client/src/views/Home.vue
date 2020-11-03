@@ -18,7 +18,7 @@
 
 <script>
 //import { models } from 'feathers-vuex';
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 import { Button, Table, TableColumn } from 'element-ui';
 
@@ -30,12 +30,22 @@ export default {
         'el-table-column': TableColumn,
     },
     async created() {
-      this.findChars({ query: {} });
+      console.log(this.user._id);
+      this.findChars({
+        query: {
+          userId: this.user._id
+        }
+      });
     },
     computed: {
       ...mapGetters('characters', { findCharsInStore: 'find' }),
+      ...mapState(['user']),
       characters() {
-        return this.findCharsInStore().data;
+        return this.findCharsInStore({
+          query: {
+            userId: this.user._id
+          }
+        }).data;
       }
     },
     methods: {

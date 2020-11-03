@@ -6,10 +6,12 @@ const verifyUser = require('../../hooks/verify-user');
 
 const maskRoll = require('../../hooks/mask-roll');
 
+const convertUserId = require('../../hooks/convert-user-id');
+
 module.exports = {
   before: {
     all: [authenticate('jwt')],
-    find: [],
+    find: [convertUserId()],
     get: [],
     create: [addUserId()],
     update: [verifyUser()],

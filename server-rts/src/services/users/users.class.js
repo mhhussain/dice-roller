@@ -10,8 +10,13 @@ exports.Users = class Users extends Service {
   }
 
   async create(data, params) {
-    const existingUser = await this.find({ username: data.email });
-    if (existingUser) {
+    const existingUser = await this.find({
+      query: {
+        username: data.email
+      },
+    });
+
+    if (existingUser.data.length != 0) {
       throw new Error('User already exists');
     }
 

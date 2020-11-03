@@ -4,10 +4,12 @@ const addUserId = require('../../hooks/add-user-id');
 
 const verifyUser = require('../../hooks/verify-user');
 
+const convertUserId = require('../../hooks/convert-user-id');
+
 module.exports = {
   before: {
     all: [authenticate('jwt')],
-    find: [authenticate('jwt')],
+    find: [authenticate('jwt'), convertUserId()],
     get: [authenticate('jwt')],
     create: [addUserId()],
     update: [verifyUser()],
