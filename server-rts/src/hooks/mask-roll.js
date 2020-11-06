@@ -6,12 +6,22 @@ module.exports = (options = {}) => {
   return async context => {
     const { user } = context.params;
 
-    context.result.data = await context.result.data.map(r => {
-      const maskedRoll = r;
-      r.dvalue = r.userId.toString() === user._id.toString() || r.visible ? r.dvalue : null;
-      r.roll = r.userId.toString() === user._id.toString() || r.visible ? r.roll : null;
-      return maskedRoll;
-    });
+    if (!user) {
+      return context;
+    }
+
+    if (context.result.data) {
+      context.result.data = await context.result.data.map(r => {
+        const maskedRoll = r;
+        r.dvalue = r.userId.toString() === user._id.toString() || r.visible ? r.dvalue : null;
+        r.roll = r.userId.toString() === user._id.toString() || r.visible ? r.roll : null;
+        return maskedRoll;
+      });
+    } else {
+      const r = context.result;
+      context.result.dvalue = r.userId.toString() === user._id.toString() || r.visible ? r.dvalue : null;
+      context.result.roll = r.userId.toString() === user._id.toString() || r.visible ? r.roll : null;
+    }
 
     return context;
   };

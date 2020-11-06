@@ -25,11 +25,18 @@ exports.Rolls = class Rolls extends Service {
   }
 
   async patch(id, data, params) {
+    console.dir(data);
     const patchRoll = {
       _id: id,
-      name: data.name,
-      visible: data.visible,
     };
+
+    if (typeof data.name != 'undefined') {
+      patchRoll.name = data.name;
+    }
+
+    if (typeof data.visible != 'undefined') {
+      patchRoll.visible = data.visible;
+    }
 
     return super.patch(id, patchRoll, params);
   }

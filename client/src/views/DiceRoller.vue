@@ -43,8 +43,6 @@ export default {
     this.session._id = sessionId;
     this.currentCharacter._id = characterId;
   },
-  computed: {
-  },
   methods: {
     ...mapActions('rolls', { createRoll: 'create' }),
     async rollDie(val) {

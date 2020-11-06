@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import api from '../api/diceroller';
 import { Button, Card } from 'element-ui';
 
@@ -33,13 +34,20 @@ export default {
     },
     async created() {},
     methods: {
+        ...mapActions('rolls', { patchRoll: 'patch' }),
         async showRoll(rollId) {
-            await api.showRoll(rollId);
-            this.$emit('rollUpdated', rollId);
+            const roll = {
+                visible: true,
+            };
+            
+            this.patchRoll([rollId, {}, { data: roll }]);
         },
         async hideRoll(rollId) {
-            await api.hideRoll(rollId);
-            this.$emit('rollUpdated', rollId);
+            const roll = {
+                visible: false,
+            };
+            
+            this.patchRoll([rollId, {}, { data: roll }]);
         },
         async renameRoll(rollId, name) {
             await api.nameRoll(rollId, name);
