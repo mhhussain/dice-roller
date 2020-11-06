@@ -1,30 +1,66 @@
 {
   "name": "dice-roller-api",
-  "version": "1.0.0",
-  "description": "dice-roller-api",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo no tests",
-    "start": "node ./src/index.js",
-    "dev": "nodemon ./src/index.js"
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "",
+  "private": true,
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "mo",
+    "email": "mo@moohh.xyz"
   },
-  "author": "",
-  "license": "ISC",
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "engines": {
+    "node": "^15.0.0",
+    "yarn": ">= 0.18.0"
+  },
+  "scripts": {
+    "test": "yarn run lint && yarn run mocha",
+    "lint": "eslint src/. test/. --config .eslintrc.json --fix",
+    "dev": "nodemon src/",
+    "start": "node src/",
+    "mocha": "mocha test/ --recursive --exit"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ],
+    "ignore": []
+  },
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
+    "@feathersjs/authentication": "^4.5.8",
+    "@feathersjs/authentication-local": "^4.5.8",
+    "@feathersjs/authentication-oauth": "^4.5.8",
+    "@feathersjs/cli": "^4.4.1",
+    "@feathersjs/configuration": "^4.5.8",
+    "@feathersjs/errors": "^4.5.8",
+    "@feathersjs/express": "^4.5.8",
+    "@feathersjs/feathers": "^4.5.8",
+    "@feathersjs/socketio": "^4.5.8",
+    "@feathersjs/transport-commons": "^4.5.9",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
+    "feathers-mongodb": "^6.2.0",
     "helmet": "^4.1.1",
-    "lodash": "^4.17.20",
-    "mongoose": "^5.10.9",
-    "monk": "^7.3.2",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.5",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "winston": "^3.3.3",
-    "yup": "^0.29.3"
+    "mongodb": "^3.6.2",
+    "mongodb-core": "^3.2.7",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "axios": "^0.21.0",
+    "eslint": "^7.10.0",
+    "mocha": "^8.1.3",
+    "nodemon": "^2.0.4"
   }
 }
