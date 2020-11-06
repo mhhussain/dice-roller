@@ -30,7 +30,6 @@ export default {
         'el-table-column': TableColumn,
     },
     async created() {
-      console.log(this.user._id);
       this.findChars({
         query: {
           userId: this.user._id

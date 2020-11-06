@@ -5,7 +5,11 @@ const { ObjectId } = require('mongodb');
 module.exports = (options = {}) => {
   return async context => {
     const { query } = context.params;
-    query.userId = ObjectId(query.userId);
+
+    if (query.userId) {
+      query.userId = ObjectId(query.userId);
+    }
+
     return context;
   };
 };

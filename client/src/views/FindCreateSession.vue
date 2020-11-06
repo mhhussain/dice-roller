@@ -53,6 +53,12 @@ export default {
                 query: data
             });
 
+            if (session.data.length === 0) {
+                console.log('no session found');
+                // global message
+                return;
+            }
+
             this.$router.push(`/session/${session.data[0]._id}/character`);
         },
         async onCreateSession() {

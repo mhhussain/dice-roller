@@ -27,21 +27,54 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import _ from 'lodash';
 import Roll from '../components/Roll';
 
 export default {
     name: 'CharacterList',
-    props: ['characters', 'currentCharacter', 'rolls'],
+    props: ['session', 'currentCharacter'],
     components: {
         Roll,
     },
     data: () => ({
-        session: {},
     }),
+    async created() {
+        await this.findChars({
+            query: {
+                sessionId: this.session._id,
+            }
+        });
+        
+        await this.findRolls({
+            query: {
+                sessionId: this.session._id,
+            }
+        });
+    },
+    computed: {
+        ...mapGetters('characters', { findCharsInStore: 'find' }),
+        ...mapGetters('rolls', { findRollsInStore: 'find' }),
+        rolls() {
+            return this.findRollsInStore({
+                query: {
+                    sessionId: this.session._id,
+                }
+            }).data;
+        },
+        characters() {
+            return this.findCharsInStore({
+                query: {
+                    sessionId: this.session._id,
+                }
+            }).data;
+        },
+    },
     methods: {
-        async rollsForCharacter(characterId) {
-            return await _.filter(this.rolls, (r) => r.characterId === characterId);
+        ...mapActions('characters', { findChars: 'find' }),
+        ...mapActions('rolls', { findRolls: 'find' }),
+        rollsForCharacter(characterId) {
+            return _.filter(this.rolls, (r) => r.characterId === characterId);
         },
     }
 }

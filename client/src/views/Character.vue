@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { Input, Button, Table, TableColumn } from 'element-ui';
 
 export default {
@@ -41,15 +41,18 @@ export default {
     this.findChars({
       query: {
         sessionId: this.session.id,
+          userId: this.user._id,
       }
     });
   },
   computed: {
+    ...mapState(['user']),
     ...mapGetters('characters', { findCharsInStore: 'find' }),
     characters() {
       return this.findCharsInStore({
         query: {
           sessionId: this.session.id,
+          userId: this.user._id,
         }
       }).data;
     }

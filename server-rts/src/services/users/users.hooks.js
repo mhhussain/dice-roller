@@ -6,6 +6,8 @@ const {
 
 const verifyUser = require('../../hooks/verify-user');
 
+const filterUser = require('../../hooks/filter-user');
+
 module.exports = {
   before: {
     all: [],
@@ -18,7 +20,7 @@ module.exports = {
   },
 
   after: {
-    all: [ 
+    all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
       protect('password')

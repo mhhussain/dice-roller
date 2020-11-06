@@ -13,8 +13,6 @@ module.exports = (options = {}) => {
       return maskedRoll;
     });
 
-    console.dir('jfieowajfew');
-
     return context;
   };
 };

@@ -6,6 +6,8 @@ const verifyUser = require('../../hooks/verify-user');
 
 const convertUserId = require('../../hooks/convert-user-id');
 
+const filterUser = require('../../hooks/filter-user');
+
 module.exports = {
   before: {
     all: [authenticate('jwt')],

@@ -3,11 +3,8 @@
       <div class="title">
         <h1>{{ session.name }}</h1>
       </div>
-      <pre>
-        {{ rolls }}
-      </pre>
       <div class="rolls-container">
-        <CharacterList :characters="characters" :currentCharacter="currentCharacter" :rolls="rolls" />
+        <CharacterList :session="session" :currentCharacter="currentCharacter" />
       </div>
       <div class="roll-btn">
         <el-button type="primary" @click="rollDie(2)">Roll 2</el-button>
@@ -24,7 +21,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import { Button } from 'element-ui';
 import CharacterList from '../components/CharacterList';
 
@@ -45,45 +42,10 @@ export default {
     const { sessionId, characterId } = this.$route.params;
     this.session._id = sessionId;
     this.currentCharacter._id = characterId;
-
-    await this.findChars({
-      query: {
-        sessionId: this.session._id,
-      }
-    });
-    
-    await this.findRolls({
-      query: {
-        sessionId: this.session._id,
-      }
-    });
-
-    console.log('feijo');
-    console.log(this.session);
-    console.log(this.characters);
-    console.log(this.rolls);
   },
   computed: {
-    ...mapGetters('characters', { findCharsInStore: 'find' }),
-    ...mapGetters('rolls', { findRollsInStore: 'find' }),
-    rolls() {
-      return this.findRollsInStore({
-        query: {
-          sessionId: this.session._id,
-        }
-      }).data;
-    },
-    characters() {
-      return this.findCharsInStore({
-        query: {
-          sessionId: this.session._id,
-        }
-      }).data;
-    },
   },
   methods: {
-    ...mapActions('characters', { findChars: 'find' }),
-    ...mapActions('rolls', { findRolls: 'find' }),
     ...mapActions('rolls', { createRoll: 'create' }),
     async rollDie(val) {
       const newRoll = {
