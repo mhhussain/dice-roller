@@ -1,15 +1,16 @@
-const path = require('path');
-
 module.exports = {
-  outputDir: path.resolve(__dirname, '../server/public'),
-  devServer: {
-    proxy: {
-      '/': {
-        target: 'http://localhost:5001',
+  "outputDir": "/Users/seraphim/code/dice-roller/server/public",
+  "devServer": {
+    "proxy": {
+      "/": {
+        "target": "http://localhost:5001"
       },
-      '/authenticate': {
-        target: 'http://localhost:5001',
-      },
-    },
+      "/authenticate": {
+        "target": "http://localhost:5001"
+      }
+    }
   },
-};
+  "transpileDependencies": [
+    "vuetify"
+  ]
+}

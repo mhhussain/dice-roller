@@ -5,4 +5,7 @@ export default {
     setAuthorized(state) {
         state.isAuthorized = true;
     },
+    setError(state, error) {
+        state.error = error;
+    },
 };

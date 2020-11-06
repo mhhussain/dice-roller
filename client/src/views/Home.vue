@@ -1,8 +1,11 @@
 <template>
-  <div class="home-view">
-      <h1>HOME</h1>
-      <el-button type="success" @click="navigateSession">Find or Create Session</el-button>
-      <h2>Characters:</h2>
+  <v-container class="d-flex flex-column">
+    <h1 class="mb-10">Dashboard</h1>
+    <v-container class="d-flex flex-column align-end">
+      <v-btn color="success" @click="navigateSession">Find or Create Session</v-btn>
+    </v-container>
+    <v-container class="d-flex flex-column">
+      <h3>Characters:</h3>
       <div class="character-table">
         <el-table :data="characters" @row-click="joinSession">
           <el-table-column prop="name" label="Name" />
@@ -13,19 +16,19 @@
           </el-table-column>
         </el-table>
       </div>
-  </div>
+    </v-container>
+  </v-container>
 </template>
 
 <script>
 //import { models } from 'feathers-vuex';
 import { mapState, mapActions, mapGetters } from 'vuex';
 
-import { Button, Table, TableColumn } from 'element-ui';
+import { Table, TableColumn } from 'element-ui';
 
 export default {
     name: 'Home',
     components: {
-        'el-button': Button,
         'el-table': Table,
         'el-table-column': TableColumn,
     },
@@ -61,15 +64,7 @@ export default {
 </script>
 
 <style scoped>
-.home-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 25vw;
-  padding-right: 25vw;
-}
 
 .character-table {
-  width: 50vw;
 }
 </style>

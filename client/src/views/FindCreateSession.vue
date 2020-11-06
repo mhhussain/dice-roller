@@ -44,6 +44,7 @@ export default {
     methods: {
         ...mapActions('sessions', { findSessions: 'find' }),
         ...mapActions('sessions', { createSession: 'create' }),
+        ...mapActions(['raiseError']),
         async onJoinSession() {
             const data = {
                 name: this.session.name,
@@ -54,7 +55,7 @@ export default {
             });
 
             if (session.data.length === 0) {
-                console.log('no session found');
+                this.raiseError({ message: 'no session found' });
                 // global message
                 return;
             }

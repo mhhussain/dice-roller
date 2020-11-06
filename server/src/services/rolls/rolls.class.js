@@ -25,7 +25,6 @@ exports.Rolls = class Rolls extends Service {
   }
 
   async patch(id, data, params) {
-    console.dir(data);
     const patchRoll = {
       _id: id,
     };

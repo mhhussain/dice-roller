@@ -1,47 +1,71 @@
 <template>
-  <div id="app">
-    <Header />
-    <el-main>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <v-app-bar-nav-icon v-if="isAuthorized" @click="drawer = !drawer"></v-app-bar-nav-icon>
+    </v-app-bar>
+    <v-navigation-drawer
+      app
+      v-model="drawer"
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            Dice Roller
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list
+        nav
+      >
+        <v-list-item
+          :to="{ name: 'home' }"
+          link
+        >
+          <v-list-item-content>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          :to="{ name: 'findcreatesession' }"
+          link
+        >
+          <v-list-item-content>
+            <v-list-item-title>Find or create session</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        
+      </v-list>
+    </v-navigation-drawer>
+    <v-main>
       <router-view />
-    </el-main>
-  </div>
+      <v-alert v-if="error" type="error">
+        {{ error.message }}
+      </v-alert>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import { Main } from 'element-ui'
-import Header from './components/Header.vue';
+import { mapState } from 'vuex';
 
 export default {
   name: 'App',
-  components: {
-    Header,
-    'el-main': Main,
-  },
-  async created() {},
-  methods: {}
-}
+  data: () => ({
+    drawer: false,
+  }),
+  computed: {
+    ...mapState(['error', 'isAuthorized']),
+  }
+};
 </script>
 
-<style>
-body {
-  padding: 0;
-  margin: 0;
-}
+<style scoped>
 
-#app {
-  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #373F51;
-  background-color: #D8DBE2;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-}
-
-.el-main {
-  padding: 0;
-}
 </style>

@@ -18,6 +18,7 @@ export default new Vuex.Store({
         appName: 'Dice Roller',
         user: {},
         isAuthorized: false,
+        error: null,
     },
     mutations: mutations,
     actions: actions,
