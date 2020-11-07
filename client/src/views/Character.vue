@@ -1,34 +1,44 @@
 <template>
-  <div class="character-view">
-      <div class="create-character">
-        <el-input class="create-char-input" type="text" v-model="newChar.name" placeholder="create character name" />
-        <el-button class="create-char-button" type="success" @click="createCharacter">New</el-button>
-      </div>
-      <div class="character-table">
-        <el-table :data="characters" @row-click="joinSession">
-          <el-table-column prop="name" label="Name" />
-          <el-table-column prop="inSession" label="In Session" width="150">
-            <template slot-scope="scope">
-              <i v-if="scope.row.inSession" class="el-icon-time"></i>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-  </div>
+  <v-container class="d-flex flex-column align-center">
+      <v-container class="d-flex align-center">
+        <v-text-field label="create character name" v-model="newChar.name" />
+        <v-btn color="success" @click="createCharacter">New</v-btn>
+      </v-container>
+      <v-container>
+        <v-simple-table
+          fixed-header
+          height="300px"
+        >
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">Name</th>
+                <th class="text-left">inSession</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(c, index) in characters"
+                :index="index"
+                :key="c._id"
+                @click="joinSession(c)"
+              >
+                <td>{{ c.name }}</td>
+                <td>{{ c.inSession }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-container>
+  </v-container>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import { Input, Button, Table, TableColumn } from 'element-ui';
 
 export default {
   name: 'character',
-  components: {
-    'el-input': Input,
-    'el-button': Button,
-    'el-table': Table,
-    'el-table-column': TableColumn,
-  },
+  components: {},
   data() {
     return {
       session: {},
@@ -81,13 +91,6 @@ export default {
 </script>
 
 <style scoped>
-.character-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 25vw;
-  padding-right: 25vw;
-}
 
 .create-character {
   display: flex;
@@ -106,7 +109,4 @@ export default {
   margin-top: 10px;
 }
 
-.character-table {
-  width: 50vw;
-}
 </style>

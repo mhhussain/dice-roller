@@ -6,7 +6,7 @@
     </v-container>
     <v-container class="d-flex flex-column">
       <h3>Characters:</h3>
-      <div class="character-table">
+      <div>
         <v-simple-table
           fixed-header
           height="300px"
