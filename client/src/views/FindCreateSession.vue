@@ -1,39 +1,36 @@
 <template>
-    <div class="session-view">
-      <h1>Find or create a session</h1>
-      <div class="error" v-if="error">{{ error.message }}</div>
-      <div class="session-name">
-          <div>
-              <el-input type="text" v-model="session.name" placeholder="session name" />
-          </div>
-      </div>
-      <div class="session-password">
-          <div>
-              <el-input v-model="session.password" placeholder="session password" show-password />
-          </div>
-      </div>
-      <div class="home-btn">
-          <el-button type="primary" @click="onJoinSession">Join Session</el-button>
-      </div>
-      <div class="home-btn">
-          <el-button type="success" @click="onCreateSession">Create Session</el-button>
-      </div>
-  </div>
+    <v-container class="d-flex flex-column align-center">
+        <h1>Find or create a session</h1>
+        <div>
+            <v-text-field label="session name" v-model="session.name" />
+        </div>
+        <div>
+            <v-text-field
+                label="password"
+                v-model="session.password"
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show ? 'text' : 'password'"
+                @click:append="show = !show"
+            />
+        </div>
+        <div class="home-btn">
+            <v-btn class="mt-8 mb-6" color="primary" @click="onJoinSession">Join Session</v-btn>
+        </div>
+        <div class="home-btn">
+            <v-btn @click="onCreateSession">Create Session</v-btn>
+        </div>
+  </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { Input, Button } from 'element-ui';
 
 export default {
     name: 'FindCreateSession',
-    components: {
-        'el-input': Input,
-        'el-button': Button,
-    },
+    components: {},
     data() {
         return {
-            error: '',
+            show: false,
             session: {
                 name: '',
                 password: '',
@@ -69,29 +66,24 @@ export default {
                 status: 'open',
             };
 
-            const session = await this.createSession(data);
-
-            this.$router.push(`/session/${session._id}/character`);
+            try {
+                const session = await this.createSession(data);
+                this.$router.push(`/session/${session._id}/character`);
+            } catch (e) {
+                this.raiseError({ message: 'could not create session' });
+            }
         },
     }
 }
 </script>
 
 <style scoped>
-.home-view {
-    display: flex;
-    flex-direction: column;
+.v-text-field {
+    width: 300px;
 }
 
-.el-input {
-    min-width: 250px;
-    width: 25vw;
-    margin: 5px;
+.v-btn {
+    width: 300px;
 }
 
-.el-button {
-    min-width: 250px;
-    width: 25vw;
-    margin: 5px;
-}
 </style>

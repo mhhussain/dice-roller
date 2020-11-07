@@ -2,7 +2,7 @@
   <v-container class="d-flex flex-column align-center">
     <h1>Login</h1>
     <div>
-      <v-text-field length="250px" label="email" v-model="email" />
+      <v-text-field label="email" v-model="email" />
     </div>
     <div>
       <v-text-field
