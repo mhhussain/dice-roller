@@ -14,7 +14,7 @@
       />
     </div>
     <div class="button">
-      <v-btn class="mb-2" color="primary" @click="login">Login</v-btn>
+      <v-btn class="mt-8 mb-6" color="primary" @click="login">Login</v-btn>
     </div>
     <div class="button">
       <v-btn @click="register">Register</v-btn>

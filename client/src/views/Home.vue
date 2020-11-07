@@ -7,14 +7,34 @@
     <v-container class="d-flex flex-column">
       <h3>Characters:</h3>
       <div class="character-table">
-        <el-table :data="characters" @row-click="joinSession">
-          <el-table-column prop="name" label="Name" />
-          <el-table-column prop="inSession" label="In Session" width="150">
-            <template slot-scope="scope">
-              <i v-if="scope.row.inSession" class="el-icon-time"></i>
-            </template>
-          </el-table-column>
-        </el-table>
+        <v-simple-table
+          fixed-header
+          height="300px"
+        >
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">
+                  Name
+                </th>
+                <th class="text-left">
+                  Session
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(c, index) in characters"
+                :index="index"
+                :key="c._id"
+                @click="joinSession(c)"
+              >
+                <td>{{ c.name }}</td>
+                <td>{{ c.inSession }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </div>
     </v-container>
   </v-container>
@@ -24,16 +44,11 @@
 //import { models } from 'feathers-vuex';
 import { mapState, mapActions, mapGetters } from 'vuex';
 
-import { Table, TableColumn } from 'element-ui';
-
 export default {
     name: 'Home',
-    components: {
-        'el-table': Table,
-        'el-table-column': TableColumn,
-    },
+    components: {},
     async created() {
-      this.findChars({
+      await this.findChars({
         query: {
           userId: this.user._id
         }
@@ -65,6 +80,4 @@ export default {
 
 <style scoped>
 
-.character-table {
-}
 </style>

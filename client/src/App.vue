@@ -25,19 +25,13 @@
         nav
       >
         <v-list-item
-          :to="{ name: 'home' }"
+          v-for="(item, index) in drawerItems"
+          :key="index"
+          :to="{ name: item.name }"
           link
         >
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          :to="{ name: 'findcreatesession' }"
-          link
-        >
-          <v-list-item-content>
-            <v-list-item-title>Find or create session</v-list-item-title>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         
@@ -59,6 +53,11 @@ export default {
   name: 'App',
   data: () => ({
     drawer: false,
+    drawerItems: [
+      { name: 'home', title: 'Home' },
+      { name: 'home', title: 'Sessions' },
+      { name: 'findcreatesession', title: 'Find or create session' },
+    ]
   }),
   computed: {
     ...mapState(['error', 'isAuthorized']),
