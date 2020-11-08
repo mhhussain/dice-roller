@@ -1,36 +1,7 @@
 <template>
   <v-app>
     <Header />
-    <v-navigation-drawer
-      app
-      v-model="sidebar.drawerOpen"
-    >
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            Dice Roller
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list
-        nav
-      >
-        <v-list-item
-          v-for="(item, index) in sidebar.drawerItems"
-          :key="index"
-          :to="{ name: item.name }"
-          link
-        >
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        
-      </v-list>
-    </v-navigation-drawer>
+    <SidebarDrawer />
     <v-main>
       <router-view />
       <v-alert v-if="error" type="error">
@@ -43,16 +14,18 @@
 <script>
 import { mapState } from 'vuex';
 import Header from './components/Header.vue';
+import SidebarDrawer from './components/SidebarDrawer.vue';
 
 export default {
   name: 'App',
   components: {
     Header,
+    SidebarDrawer,
   },
   data: () => ({}),
   computed: {
-    ...mapState(['error', 'isAuthorized', 'sidebar']),
-  }
+    ...mapState(['error']),
+  },
 };
 </script>
 
