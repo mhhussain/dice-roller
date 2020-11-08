@@ -13,4 +13,7 @@ export default {
             context.commit('setError', null);
         }, 5000);
     },
+    toggleSidebarDrawer(context, val) {
+        context.commit('setSidebarDrawer', !val);
+    },
 };

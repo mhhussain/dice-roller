@@ -19,6 +19,14 @@ export default new Vuex.Store({
         user: {},
         isAuthorized: false,
         error: null,
+        sidebar: {
+            drawerOpen: false,
+            drawerItems: [
+                { name: 'home', title: 'Home' },
+                { name: 'home', title: 'Sessions' },
+                { name: 'findcreatesession', title: 'Find or create session' },
+            ],
+        },
     },
     mutations: mutations,
     actions: actions,

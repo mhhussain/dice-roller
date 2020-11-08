@@ -8,4 +8,7 @@ export default {
     setError(state, error) {
         state.error = error;
     },
+    setSidebarDrawer(state, val) {
+        state.sidebar.drawerOpen = val;
+    },
 };

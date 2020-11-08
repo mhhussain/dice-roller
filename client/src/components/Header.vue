@@ -1,26 +1,30 @@
 <template>
-  <div class="header-component">
-    <router-link to="/" class="header-label">{{ appName }}</router-link>
-    <p v-if="user.email">{{ user.email }}</p>
-    <el-button v-if="user.email" type="danger" @click="logoutButon">Logout</el-button>
-  </div>
+  <v-container>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <v-app-bar-nav-icon v-if="isAuthorized" @click="toggleSidebarDrawer(sidebar.drawerOpen)"></v-app-bar-nav-icon>
+    </v-app-bar>
+  </v-container>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { Button } from 'element-ui';
 
 export default {
     name: 'Header',
-    components: {
-      'el-button': Button,
-    },
+    components: {},
+    data: () => ({
+      drawer: false,
+    }),
     computed: {
-      ...mapState(['appName', 'user']),
+      ...mapState(['appName', 'user', 'isAuthorized', 'sidebar']),
     },
     async created() {},
     methods: {
-      ...mapActions(['userLogout']),
+      ...mapActions(['userLogout', 'toggleSidebarDrawer']),
       ...mapActions('auth', ['logout']),
       async logoutButon() {
         await this.logout();

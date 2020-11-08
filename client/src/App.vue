@@ -1,15 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <v-app-bar-nav-icon v-if="isAuthorized" @click="drawer = !drawer"></v-app-bar-nav-icon>
-    </v-app-bar>
+    <Header />
     <v-navigation-drawer
       app
-      v-model="drawer"
+      v-model="sidebar.drawerOpen"
     >
       <v-list-item>
         <v-list-item-content>
@@ -25,7 +19,7 @@
         nav
       >
         <v-list-item
-          v-for="(item, index) in drawerItems"
+          v-for="(item, index) in sidebar.drawerItems"
           :key="index"
           :to="{ name: item.name }"
           link
@@ -48,19 +42,16 @@
 
 <script>
 import { mapState } from 'vuex';
+import Header from './components/Header.vue';
 
 export default {
   name: 'App',
-  data: () => ({
-    drawer: false,
-    drawerItems: [
-      { name: 'home', title: 'Home' },
-      { name: 'home', title: 'Sessions' },
-      { name: 'findcreatesession', title: 'Find or create session' },
-    ]
-  }),
+  components: {
+    Header,
+  },
+  data: () => ({}),
   computed: {
-    ...mapState(['error', 'isAuthorized']),
+    ...mapState(['error', 'isAuthorized', 'sidebar']),
   }
 };
 </script>
