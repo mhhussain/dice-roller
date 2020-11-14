@@ -1,43 +1,30 @@
 <template>
-    <div class="characters-container">
-        <div v-for="(character, index) in characters"
-            v-bind:value="character"
-            v-bind:item="character"
-            v-bind:index="index"
+    <v-container class="d-flex flex-column">
+        <v-card class="mb-4" v-for="(c, index) in characters"
             v-bind:key="index"
-            class="character-section"
         >
-            <div class="characater-row">
-                <div class="character-details">
-                    <label for="character-name">{{ character.name }}</label>
-                </div>
-                <div class="character-rolls-container">
-                    <div v-for="(roll, rindex) in rollsForCharacter(character._id)"
-                        v-bind:value="roll"
-                        v-bind:item="roll"
-                        v-bind:index="rindex"
-                        v-bind:key="rindex"
-                    >
-                        <Roll :roll="roll" :controlsVisible="character._id === currentCharacter._id" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <v-card-title>{{ c.name }}</v-card-title>
+            <v-card-text>
+                <v-chip-group column >
+                    <v-chip>4</v-chip>
+                    <v-chip>5</v-chip>
+                    <v-chip>6</v-chip>
+                </v-chip-group>
+            </v-card-text>
+        </v-card>
+    </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import _ from 'lodash';
-import Roll from '../components/Roll';
 
 export default {
     name: 'CharacterList',
     props: ['session', 'currentCharacter'],
-    components: {
-        Roll,
-    },
+    components: {},
     data: () => ({
+        selection: 1,
     }),
     async created() {
         await this.findChars({
@@ -81,24 +68,8 @@ export default {
 </script>
 
 <style scoped>
-.characters-container {
-  display: flex;
-  flex-direction: column;
-}
 
-.characater-row {
-  display: flex;
-  margin-bottom: 15px;
-}
-
-.character-details {
-  min-width: 150px;
-  width: 150px;
-  text-align: left;
-}
-
-.character-rolls-container {
-  display: flex;
-  margin-left: 50px;
+.v-card {
+    max-width: 300px;
 }
 </style>
