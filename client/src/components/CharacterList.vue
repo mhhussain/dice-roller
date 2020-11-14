@@ -48,7 +48,16 @@
                   v-for="(r, i) in rollsForCharacter(rollsDialogCharacter._id)"
                   :key="i"
                 >
-                  <td>{{ r.name }}</td>
+                  <td>
+                    <p
+                      v-on:keydown.enter.capture.prevent="
+                        saveName($event, r._id)
+                      "
+                      contenteditable="true"
+                    >
+                      {{ r.name }}
+                    </p>
+                  </td>
                   <td class="font-weight-bold">{{ r.roll || '--' }}</td>
                   <td class="font-weight-light">{{ r.dvalue || '--' }}</td>
                   <td>
@@ -85,6 +94,7 @@ export default {
   data: () => ({
     rollsDialog: false,
     rollsDialogCharacter: {},
+    newName: '',
   }),
   async created() {
     await this.findChars({
@@ -133,6 +143,15 @@ export default {
     },
     toggleRollVisibility(rollId, visible) {
       this.patchRoll([rollId, { visible }]);
+    },
+    onInput(e) {
+      console.log('fijoe');
+      console.log(e);
+      this.newName = e.target.innerText;
+    },
+    saveName(e, rollId) {
+      this.patchRoll([rollId, { name: e.target.innerText }]);
+      e.target.blur();
     },
   },
 };
