@@ -1,50 +1,71 @@
 <template>
-  <div class="dice-roller-view">
-      <div class="title">
+  <v-container>
+    <v-container class="d-flex flex-column align-center">
+      <v-container>
         <h1>{{ session.name }}</h1>
-      </div>
-      <div class="rolls-container">
-        <CharacterList :session="session" :currentCharacter="currentCharacter" />
-      </div>
-      <div class="roll-btn">
-        <el-button type="primary" @click="rollDie(2)">Roll 2</el-button>
-        <el-button type="primary" @click="rollDie(3)">Roll 3</el-button>
-        <el-button type="primary" @click="rollDie(4)">Roll 4</el-button>
-        <el-button type="primary" @click="rollDie(5)">Roll 5</el-button>
-        <el-button type="primary" @click="rollDie(6)">Roll 6</el-button>
-        <el-button type="primary" @click="rollDie(8)">Roll 8</el-button>
-        <el-button type="primary" @click="rollDie(10)">Roll 10</el-button>
-        <el-button type="primary" @click="rollDie(12)">Roll 12</el-button>
-        <el-button type="primary" @click="rollDie(20)">Roll 20</el-button>
-      </div>
-  </div>
+      </v-container>
+      <v-container>
+        <CharacterList
+          :session="session"
+          :currentCharacter="currentCharacter"
+        />
+      </v-container>
+      <v-container class="mt-auto">
+        <v-bottom-navigation :value="0" color="primary">
+          <v-dialog v-model="dialog">
+            <template v-slot:activator="{ on, attr }">
+              <v-btn v-bind="attr" v-on="on"> Roll </v-btn>
+            </template>
+            <v-container class="grey d-flex flex-wrap">
+              <v-btn
+                class="ma-2"
+                color="purple"
+                v-for="(val, i) in [2, 4, 6, 8, 10, 12, 20]"
+                :key="i"
+                @click="rollDie(val)"
+              >
+                {{ val }}
+              </v-btn>
+            </v-container>
+          </v-dialog>
+        </v-bottom-navigation>
+      </v-container>
+    </v-container>
+  </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { Button } from 'element-ui';
 import CharacterList from '../components/CharacterList';
 
 export default {
   name: 'diceroller',
   components: {
-    'el-button': Button,
     CharacterList,
   },
   data() {
     return {
       error: '',
+      dialog: false,
       session: {},
       currentCharacter: {},
-    }
+    };
   },
   async created() {
     const { sessionId, characterId } = this.$route.params;
-    this.session._id = sessionId;
     this.currentCharacter._id = characterId;
+
+    const res = await this.findSession({
+      query: {
+        _id: sessionId,
+      },
+    });
+
+    this.session = await res.data[0];
   },
   methods: {
     ...mapActions('rolls', { createRoll: 'create' }),
+    ...mapActions('sessions', { findSession: 'find' }),
     async rollDie(val) {
       const newRoll = {
         sessionId: this.session._id,
@@ -52,40 +73,12 @@ export default {
         dvalue: val,
         name: 'roll',
       };
-      
       await this.createRoll(newRoll);
+      this.dialog = false;
     },
   },
-}
+};
 </script>
 
 <style scoped>
-.dice-roller-view {
-  display: flex;
-  flex-direction: column;
-  height: 90vh;
-}
-
-.title {
-  flex: 1;
-  margin-left: 20vw;
-  margin-right: 20vw;
-  text-align: left;
-}
-
-.rolls-container {
-  flex: 5;
-  margin-left: 20vw;
-  margin-right: 20vw;
-}
-
-.roll-btn {
-  flex: 1;
-  background-color: #A9BCD0;
-}
-
-.roll-btn .el-button {
-  margin-top: 10px;
-}
-
 </style>
