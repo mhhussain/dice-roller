@@ -15,10 +15,13 @@
       v-model="newChar.class"
       required
     ></v-select>
+    <v-btn @click="createCharacter">Create</v-btn>
   </v-container>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'charactecreate',
   data: () => ({
@@ -50,6 +53,22 @@ export default {
       'Tiefling',
     ],
   }),
+  methods: {
+    ...mapActions('characters', { createChar: 'create' }),
+    async createCharacter() {
+      const char = {
+        name: this.newChar.name,
+        sessionId: null,
+        level: this.newChar.level,
+        race: this.newChar.race,
+        class: this.newChar.class,
+        inSession: false,
+      };
+
+      await this.createChar(char);
+      this.$router.push('/');
+    },
+  },
 };
 </script>
 
