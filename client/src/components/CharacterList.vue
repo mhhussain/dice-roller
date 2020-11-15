@@ -39,8 +39,12 @@
                   <th>Name</th>
                   <th>Roll</th>
                   <th>Die</th>
-                  <th></th>
-                  <th></th>
+                  <th
+                    v-if="rollsDialogCharacter._id === currentCharacter._id"
+                  ></th>
+                  <th
+                    v-if="rollsDialogCharacter._id === currentCharacter._id"
+                  ></th>
                 </tr>
               </thead>
               <tbody>
@@ -53,14 +57,16 @@
                       v-on:keydown.enter.capture.prevent="
                         saveName($event, r._id)
                       "
-                      contenteditable="true"
+                      :contenteditable="
+                        rollsDialogCharacter._id === currentCharacter._id
+                      "
                     >
                       {{ r.name }}
                     </p>
                   </td>
                   <td class="font-weight-bold">{{ r.roll || '--' }}</td>
                   <td class="font-weight-light">{{ r.dvalue || '--' }}</td>
-                  <td>
+                  <td v-if="rollsDialogCharacter._id === currentCharacter._id">
                     <v-icon
                       :color="r.visible ? 'primary' : ''"
                       @click="toggleRollVisibility(r._id, !r.visible)"
@@ -68,7 +74,7 @@
                       {{ r.visible ? 'mdi-eye' : 'mdi-eye-off' }}
                     </v-icon>
                   </td>
-                  <td>
+                  <td v-if="rollsDialogCharacter._id === currentCharacter._id">
                     <v-icon color="red" @click="deleteRoll(r._id)">
                       mdi-delete
                     </v-icon>
@@ -145,8 +151,6 @@ export default {
       this.patchRoll([rollId, { visible }]);
     },
     onInput(e) {
-      console.log('fijoe');
-      console.log(e);
       this.newName = e.target.innerText;
     },
     saveName(e, rollId) {
