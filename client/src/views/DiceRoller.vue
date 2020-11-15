@@ -1,31 +1,27 @@
 <template>
-  <v-container fluid>
-    <v-container fluid class="d-flex flex-column align-center">
-      <v-container class="mb-8">
-        <h1>{{ session.name }}</h1>
-        <v-divider></v-divider>
-      </v-container>
-      <CharacterList :session="session" :currentCharacter="currentCharacter" />
-      <v-container class="mt-auto">
-        <v-bottom-navigation :value="0" color="primary">
-          <v-dialog v-model="dialog">
-            <template v-slot:activator="{ on, attr }">
-              <v-btn v-bind="attr" v-on="on"> Roll </v-btn>
-            </template>
-            <v-container class="grey d-flex flex-wrap">
-              <v-btn
-                class="ma-2"
-                color="purple"
-                v-for="(val, i) in [2, 4, 6, 8, 10, 12, 20]"
-                :key="i"
-                @click="rollDie(val)"
-              >
-                {{ val }}
-              </v-btn>
-            </v-container>
-          </v-dialog>
-        </v-bottom-navigation>
-      </v-container>
+  <v-container>
+    <h1>{{ session.name }}</h1>
+    <v-divider class="mt-2 mb-8"></v-divider>
+    <CharacterList :session="session" :currentCharacter="currentCharacter" />
+    <v-container class="mt-auto">
+      <v-bottom-navigation :value="0" color="primary">
+        <v-dialog v-model="dialog">
+          <template v-slot:activator="{ on, attr }">
+            <v-btn v-bind="attr" v-on="on"> Roll </v-btn>
+          </template>
+          <v-container class="grey d-flex flex-wrap">
+            <v-btn
+              class="ma-2"
+              color="purple"
+              v-for="(val, i) in [2, 4, 6, 8, 10, 12, 20]"
+              :key="i"
+              @click="rollDie(val)"
+            >
+              {{ val }}
+            </v-btn>
+          </v-container>
+        </v-dialog>
+      </v-bottom-navigation>
     </v-container>
   </v-container>
 </template>

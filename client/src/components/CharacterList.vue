@@ -42,78 +42,79 @@
         </v-chip-group>
       </v-card-text>
     </v-card>
-    <v-dialog v-model="rollsDialog">
+    <v-dialog
+      dark
+      class="d-flex flex-column align-center"
+      v-model="rollsDialog"
+    >
       <v-card>
         <v-card-title class="headline">{{
           rollsDialogCharacter.name
         }}</v-card-title>
-        <v-card-text>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Roll</th>
-                  <th>Die</th>
-                  <th
-                    v-if="rollsDialogCharacter._id === currentCharacter._id"
-                  ></th>
-                  <th
-                    v-if="rollsDialogCharacter._id === currentCharacter._id"
-                  ></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(r, i) in rollsForCharacter(rollsDialogCharacter._id)"
-                  :key="i"
+        <v-simple-table dense>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Roll</th>
+                <th>Die</th>
+                <th
+                  v-if="rollsDialogCharacter._id === currentCharacter._id"
+                ></th>
+                <th
+                  v-if="rollsDialogCharacter._id === currentCharacter._id"
+                ></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(r, i) in rollsForCharacter(rollsDialogCharacter._id)"
+                :key="i"
+              >
+                <td>
+                  <p
+                    class="text-caption"
+                    v-on:keydown.enter.capture.prevent="saveName($event, r._id)"
+                    :contenteditable="
+                      rollsDialogCharacter._id === currentCharacter._id
+                    "
+                  >
+                    {{ r.name }}
+                  </p>
+                </td>
+                <template
+                  v-if="rollsDialogCharacter._id === currentCharacter._id"
                 >
-                  <td>
-                    <p
-                      v-on:keydown.enter.capture.prevent="
-                        saveName($event, r._id)
-                      "
-                      :contenteditable="
-                        rollsDialogCharacter._id === currentCharacter._id
-                      "
-                    >
-                      {{ r.name }}
-                    </p>
+                  <td class="font-weight-bold">{{ r.roll }}</td>
+                  <td class="font-weight-light">{{ r.dvalue }}</td>
+                </template>
+                <template
+                  v-if="rollsDialogCharacter._id != currentCharacter._id"
+                >
+                  <td class="font-weight-bold">
+                    {{ r.roll && r.visible ? r.roll : '--' }}
                   </td>
-                  <template
-                    v-if="rollsDialogCharacter._id === currentCharacter._id"
+                  <td class="font-weight-light">
+                    {{ r.dvalue && r.visible ? r.roll : '--' }}
+                  </td>
+                </template>
+                <td v-if="rollsDialogCharacter._id === currentCharacter._id">
+                  <v-icon
+                    :color="r.visible ? 'primary' : ''"
+                    @click="toggleRollVisibility(r._id, !r.visible)"
                   >
-                    <td class="font-weight-bold">{{ r.roll }}</td>
-                    <td class="font-weight-light">{{ r.dvalue }}</td>
-                  </template>
-                  <template
-                    v-if="rollsDialogCharacter._id != currentCharacter._id"
-                  >
-                    <td class="font-weight-bold">
-                      {{ r.roll && r.visible ? r.roll : '--' }}
-                    </td>
-                    <td class="font-weight-light">
-                      {{ r.dvalue && r.visible ? r.roll : '--' }}
-                    </td>
-                  </template>
-                  <td v-if="rollsDialogCharacter._id === currentCharacter._id">
-                    <v-icon
-                      :color="r.visible ? 'primary' : ''"
-                      @click="toggleRollVisibility(r._id, !r.visible)"
-                    >
-                      {{ r.visible ? 'mdi-eye' : 'mdi-eye-off' }}
-                    </v-icon>
-                  </td>
-                  <td v-if="rollsDialogCharacter._id === currentCharacter._id">
-                    <v-icon color="red" @click="deleteRoll(r._id)">
-                      mdi-delete
-                    </v-icon>
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-card-text>
+                    {{ r.visible ? 'mdi-eye' : 'mdi-eye-off' }}
+                  </v-icon>
+                </td>
+                <td v-if="rollsDialogCharacter._id === currentCharacter._id">
+                  <v-icon color="red" @click="deleteRoll(r._id)">
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-card>
     </v-dialog>
   </v-container>
@@ -196,5 +197,10 @@ export default {
   width: 500px;
   max-width: 500px;
   min-width: 500px;
+}
+
+p {
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 </style>
