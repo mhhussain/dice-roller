@@ -5,6 +5,7 @@ import LoginView from '../views/Login.vue';
 import HomeView from '../views/Home.vue';
 import FindCreateSessionView from '../views/FindCreateSession.vue';
 import CharacterView from '../views/Character.vue';
+import CharacterCreateView from '../views/CharacterCreate.vue';
 import DiceRollerView from '../views/DiceRoller.vue';
 
 Vue.use(VueRouter);
@@ -35,6 +36,13 @@ const routes = [
         path: '/session/:id/character',
         name: 'character',
         component: CharacterView,
+        meta: { requiresAuth: true },
+    },
+
+    {
+        path: '/character/create',
+        name: 'charactercreate',
+        component: CharacterCreateView,
         meta: { requiresAuth: true },
     },
     {

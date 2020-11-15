@@ -25,6 +25,7 @@ export default new Vuex.Store({
                 { name: 'home', title: 'Home' },
                 { name: 'home', title: 'Sessions' },
                 { name: 'findcreatesession', title: 'Find or create session' },
+                { name: 'charactercreate', title: 'Character Creator' },
             ],
         },
     },
