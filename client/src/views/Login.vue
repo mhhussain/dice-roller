@@ -75,9 +75,13 @@ export default {
         password: this.password,
       };
 
-      await this.createUser(newUser);
-
-      this.login();
+      try {
+        await this.createUser(newUser);
+        this.login();
+      } catch (e) {
+        this.raiseError(e);
+        return;
+      }
     },
   },
 };
