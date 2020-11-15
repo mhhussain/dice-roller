@@ -58,13 +58,10 @@ export default {
       };
 
       try {
-        
         const user = await this.authenticate(data);
         this.userLogin(user.user);
         this.$router.push({ name: 'home' });
-
       } catch (e) {
-        
         this.raiseError(e);
         return;
       }
@@ -77,13 +74,13 @@ export default {
         email: this.email,
         password: this.password,
       };
-      
+
       await this.createUser(newUser);
 
-      this.$router.replace({ name: 'home' });
-    }
-  }
-}
+      this.login();
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -94,5 +91,4 @@ export default {
 .v-btn {
   width: 300px;
 }
-
 </style>
