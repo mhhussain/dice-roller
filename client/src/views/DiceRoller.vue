@@ -1,15 +1,11 @@
 <template>
-  <v-container>
-    <v-container class="d-flex flex-column align-center">
-      <v-container>
+  <v-container fluid>
+    <v-container fluid class="d-flex flex-column align-center">
+      <v-container class="mb-8">
         <h1>{{ session.name }}</h1>
+        <v-divider></v-divider>
       </v-container>
-      <v-container>
-        <CharacterList
-          :session="session"
-          :currentCharacter="currentCharacter"
-        />
-      </v-container>
+      <CharacterList :session="session" :currentCharacter="currentCharacter" />
       <v-container class="mt-auto">
         <v-bottom-navigation :value="0" color="primary">
           <v-dialog v-model="dialog">

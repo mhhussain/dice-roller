@@ -1,12 +1,20 @@
 <template>
-  <v-container class="d-flex flex-column">
+  <v-container fluid class="d-flex flex-column align-center">
     <v-card
       class="mb-4"
       v-for="(c, index) in characters"
       v-bind:key="index"
       @click.stop="openRollsDialog(c._id)"
     >
-      <v-card-title>{{ c.name }}</v-card-title>
+      <v-card-title>
+        {{ c.name }}
+        <v-spacer></v-spacer>
+        <span
+          v-if="c._id === currentCharacter._id"
+          class="font-weight-light grey--text"
+          >(you)</span
+        >
+      </v-card-title>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
         Rolls
@@ -16,12 +24,19 @@
             :key="i"
             :color="r.visible ? 'primary' : ''"
           >
-            <span v-if="r.roll">
+            <template v-if="c._id === currentCharacter._id">
               <span class="font-weight-bold">{{ r.roll }}</span>
               |
-              <span class="font-weight-light">{{ r.dvalue }}</span></span
-            >
-            <span v-if="!r.roll">??</span>
+              <span class="font-weight-light">{{ r.dvalue }}</span>
+            </template>
+            <template v-if="c._id != currentCharacter._id">
+              <template v-if="r.visible">
+                <span class="font-weight-bold">{{ ` ${r.roll}` }}</span>
+                |
+                <span class="font-weight-light">{{ r.dvalue }}</span>
+              </template>
+              <template v-if="!r.visible"> ?? </template>
+            </template>
           </v-chip>
         </v-chip-group>
       </v-card-text>
@@ -64,8 +79,22 @@
                       {{ r.name }}
                     </p>
                   </td>
-                  <td class="font-weight-bold">{{ r.roll || '--' }}</td>
-                  <td class="font-weight-light">{{ r.dvalue || '--' }}</td>
+                  <template
+                    v-if="rollsDialogCharacter._id === currentCharacter._id"
+                  >
+                    <td class="font-weight-bold">{{ r.roll }}</td>
+                    <td class="font-weight-light">{{ r.dvalue }}</td>
+                  </template>
+                  <template
+                    v-if="rollsDialogCharacter._id != currentCharacter._id"
+                  >
+                    <td class="font-weight-bold">
+                      {{ r.roll && r.visible ? r.roll : '--' }}
+                    </td>
+                    <td class="font-weight-light">
+                      {{ r.dvalue && r.visible ? r.roll : '--' }}
+                    </td>
+                  </template>
                   <td v-if="rollsDialogCharacter._id === currentCharacter._id">
                     <v-icon
                       :color="r.visible ? 'primary' : ''"
@@ -163,6 +192,8 @@ export default {
 
 <style scoped>
 .v-card {
+  width: 500px;
   max-width: 500px;
+  min-width: 500px;
 }
 </style>
