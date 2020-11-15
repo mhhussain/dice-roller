@@ -11,10 +11,11 @@
         <v-spacer></v-spacer>
         <span
           v-if="c._id === currentCharacter._id"
-          class="font-weight-light grey--text"
+          class="grey--text text-subtitle-2"
           >(you)</span
         >
       </v-card-title>
+      <v-card-subtitle> Level {{ c.level }} {{ c.class }} </v-card-subtitle>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
         Rolls
