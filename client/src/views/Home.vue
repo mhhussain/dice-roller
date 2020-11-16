@@ -8,43 +8,37 @@
     </v-container>
     <v-container class="d-flex flex-column">
       <h3>Characters:</h3>
-      <div>
-        <v-simple-table fixed-header height="300px">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">Name</th>
-                <th class="text-left">Level</th>
-                <th class="text-left">Race</th>
-                <th class="text-left">Class</th>
-                <th class="text-left">Edit</th>
-                <th class="text-left">Session</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(c, index) in characters" :index="index" :key="c._id">
-                <td>{{ c.name }}</td>
-                <td>{{ c.level }}</td>
-                <td>{{ c.race }}</td>
-                <td>{{ c.class }}</td>
-                <td>
-                  <v-icon @click="$router.push(`/character/${c._id}`)"
-                    >mdi-magnify</v-icon
-                  >
-                </td>
-                <td>
-                  <v-btn
-                    color="primary"
-                    v-if="c.inSession"
-                    @click="joinSession(c)"
-                    >Join</v-btn
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </div>
+      <v-simple-table fixed-header>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">Name</th>
+              <th class="text-left">Class</th>
+              <th class="text-left">Edit</th>
+              <th class="text-left">Session</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(c, index) in characters" :index="index" :key="c._id">
+              <td>{{ c.name }}</td>
+              <td>{{ c.class }}</td>
+              <td>
+                <v-icon @click="$router.push(`/character/${c._id}`)"
+                  >mdi-magnify</v-icon
+                >
+              </td>
+              <td>
+                <v-btn
+                  color="primary"
+                  v-if="c.inSession"
+                  @click="joinSession(c)"
+                  >Join</v-btn
+                >
+              </td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
     </v-container>
   </v-container>
 </template>
