@@ -81,10 +81,10 @@
               </template>
               <template v-if="rollsDialogCharacter._id != currentCharacter._id">
                 <td class="font-weight-bold">
-                  {{ r.roll && r.visible ? r.roll : '--' }}
+                  {{ r.visible ? r.roll : '--' }}
                 </td>
                 <td class="font-weight-light">
-                  {{ r.dvalue && r.visible ? r.roll : '--' }}
+                  {{ r.visible ? r.dvalue : '--' }}
                 </td>
               </template>
               <td v-if="rollsDialogCharacter._id === currentCharacter._id">
