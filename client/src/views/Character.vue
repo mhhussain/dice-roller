@@ -209,6 +209,7 @@ export default {
     ...mapActions('characters', { patchCharacter: 'patch' }),
     async save() {
       await this.patchCharacter([this.character._id, this.character]);
+      this.$router.push('/');
     },
   },
 };
