@@ -1,21 +1,67 @@
 <template>
   <v-container fluid class="d-flex flex-column align-center">
-    <v-card
-      class="mb-4"
-      v-for="(c, index) in characters"
-      v-bind:key="index"
-      @click.stop="openRollsDialog(c._id)"
-    >
+    <v-card class="mb-4" v-for="(c, index) in characters" v-bind:key="index">
       <v-card-title>
         {{ c.name }}
         <v-spacer></v-spacer>
         <span
           v-if="c._id === currentCharacter._id"
           class="grey--text text-subtitle-2"
-          >(you)</span
         >
+          <div>(you)</div>
+          <v-icon>mdi-dots-horizontal</v-icon>
+        </span>
       </v-card-title>
       <v-card-subtitle> Level {{ c.level }} {{ c.class }} </v-card-subtitle>
+      <v-divider class="mx-4"></v-divider>
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-header>Stats</v-expansion-panel-header>
+          <v-expansion-panel-content
+            ><v-card-text>
+              <v-row>
+                <v-col>Armor Class: {{ c.armorClass }}</v-col>
+                <v-col>Initiative: {{ c.initiative }}</v-col>
+                <v-col>Speed: {{ c.speed }}</v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  >Strength: {{ c.abilities.strength.val }} ({{
+                    c.abilities.strength.mod
+                  }})</v-col
+                >
+                <v-col
+                  >Dexterity: {{ c.abilities.dexterity.val }} ({{
+                    c.abilities.dexterity.mod
+                  }})</v-col
+                >
+                <v-col
+                  >Constitution: {{ c.abilities.constitution.val }} ({{
+                    c.abilities.constitution.mod
+                  }})</v-col
+                >
+              </v-row>
+              <v-row>
+                <v-col
+                  >Intelligence: {{ c.abilities.intelligence.val }} ({{
+                    c.abilities.intelligence.mod
+                  }})</v-col
+                >
+                <v-col
+                  >Wisdom: {{ c.abilities.wisdom.val }} ({{
+                    c.abilities.wisdom.mod
+                  }})</v-col
+                >
+                <v-col
+                  >Charisma: {{ c.abilities.charisma.val }} ({{
+                    c.abilities.charisma.mod
+                  }})</v-col
+                >
+              </v-row>
+            </v-card-text></v-expansion-panel-content
+          >
+        </v-expansion-panel>
+      </v-expansion-panels>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
         Rolls
@@ -23,7 +69,14 @@
           <v-chip
             v-for="(r, i) in rollsForCharacter(c._id)"
             :key="i"
-            :color="r.visible ? 'primary' : ''"
+            :color="
+              r.visible
+                ? c._id === currentCharacter._id
+                  ? 'primary'
+                  : 'secondary'
+                : ''
+            "
+            @click.stop="openRollsDialog(c._id)"
           >
             <template v-if="c._id === currentCharacter._id">
               <span class="font-weight-bold">{{ r.roll }}</span>
