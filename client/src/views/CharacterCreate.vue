@@ -53,6 +53,36 @@ export default {
       'Tiefling',
     ],
   }),
+  computed: {
+    abilityBlank() {
+      return {
+        strength: {
+          val: 0,
+          mod: 0,
+        },
+        dexterity: {
+          val: 0,
+          mod: 0,
+        },
+        constitution: {
+          val: 0,
+          mod: 0,
+        },
+        intelligence: {
+          val: 0,
+          mod: 0,
+        },
+        wisdom: {
+          val: 0,
+          mod: 0,
+        },
+        charisma: {
+          val: 0,
+          mod: 0,
+        },
+      };
+    },
+  },
   methods: {
     ...mapActions('characters', { createChar: 'create' }),
     async createCharacter() {
@@ -62,6 +92,7 @@ export default {
         level: this.newChar.level,
         race: this.newChar.race,
         class: this.newChar.class,
+        abilities: this.abilityBlank,
         inSession: false,
       };
 
