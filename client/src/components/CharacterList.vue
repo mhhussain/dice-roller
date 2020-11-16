@@ -182,9 +182,9 @@ export default {
 
 <style scoped>
 .v-card {
-  width: 500px;
+  width: 100%;
   max-width: 500px;
-  min-width: 500px;
+  min-width: 300px;
 }
 
 p {
