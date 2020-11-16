@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'charactecreate',
@@ -54,6 +54,7 @@ export default {
     ],
   }),
   computed: {
+    ...mapState(['user']),
     abilityBlank() {
       return {
         strength: {
@@ -85,6 +86,7 @@ export default {
   },
   methods: {
     ...mapActions('characters', { createChar: 'create' }),
+    ...mapActions('characters', { findChar: 'find' }),
     async createCharacter() {
       const char = {
         name: this.newChar.name,
@@ -97,7 +99,10 @@ export default {
       };
 
       await this.createChar(char);
-      this.$router.push('/');
+      const charRes = await this.findChar({
+        query: { name: char.name, userId: this.user._id },
+      });
+      this.$router.push(`/character/${charRes.data[0]._id}`);
     },
   },
 };
