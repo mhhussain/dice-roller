@@ -17,6 +17,7 @@
                 <th class="text-left">Level</th>
                 <th class="text-left">Race</th>
                 <th class="text-left">Class</th>
+                <th class="text-left">Edit</th>
                 <th class="text-left">Session</th>
               </tr>
             </thead>
@@ -26,6 +27,11 @@
                 <td>{{ c.level }}</td>
                 <td>{{ c.race }}</td>
                 <td>{{ c.class }}</td>
+                <td>
+                  <v-icon @click="$router.push(`/character/${c._id}`)"
+                    >mdi-magnify</v-icon
+                  >
+                </td>
                 <td>
                   <v-btn
                     color="primary"

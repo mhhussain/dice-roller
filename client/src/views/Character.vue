@@ -1,96 +1,234 @@
 <template>
-  <v-container class="d-flex flex-column align-center">
-    <h2>Add character to session</h2>
-    <v-container>
-      <v-simple-table fixed-header height="300px">
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-left">Name</th>
-              <th class="text-left">inSession</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(c, index) in characters"
-              :index="index"
-              :key="c._id"
-              @click="joinSession(c)"
+  <v-container>
+    <v-card class="pa-4">
+      <v-row>
+        <v-container>
+          <v-card-title>{{ character.name }}</v-card-title>
+          <v-card-subtitle>{{
+            `Level ${character.level} - ${character.race} ${character.class}`
+          }}</v-card-subtitle>
+          <v-divider></v-divider>
+        </v-container>
+      </v-row>
+      <v-row>
+        <v-text-field
+          v-model="character.background"
+          label="background"
+        ></v-text-field>
+        <v-select
+          :items="alignments"
+          v-model="character.alignment"
+          label="alignment"
+        ></v-select>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-text-field
+            v-model="character.armorClass"
+            label="armor class"
+          ></v-text-field>
+        </v-col>
+        <v-col>
+          <v-text-field
+            v-model="character.initiative"
+            label="initiative"
+          ></v-text-field>
+        </v-col>
+        <v-col>
+          <v-text-field v-model="character.speed" label="speed"></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row class="d-flex justify-space-between" v-if="character.abilities">
+        <v-card class="ability-card">
+          <v-card-title>Strength</v-card-title>
+          <template>
+            <v-icon @click="character.abilities.strength.val++"
+              >mdi-plus</v-icon
             >
-              <td>{{ c.name }}</td>
-              <td>{{ c.inSession }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-    </v-container>
+            <h3>
+              {{ character.abilities.strength.val }}
+            </h3>
+            <v-icon @click="character.abilities.strength.val--"
+              >mdi-minus</v-icon
+            >
+          </template>
+          <v-card-subtitle>
+            {{ character.abilities.strength.mod }}
+          </v-card-subtitle>
+        </v-card>
+        <v-card class="ability-card">
+          <v-card-title>Dexterity</v-card-title>
+          <template>
+            <v-icon @click="character.abilities.dexterity.val++"
+              >mdi-plus</v-icon
+            >
+            <h3>
+              {{ character.abilities.dexterity.val }}
+            </h3>
+            <v-icon @click="character.abilities.dexterity.val--"
+              >mdi-minus</v-icon
+            >
+          </template>
+          <v-card-subtitle>
+            {{ character.abilities.dexterity.mod }}
+          </v-card-subtitle>
+        </v-card>
+        <v-card class="ability-card">
+          <v-card-title>Constitution</v-card-title>
+          <template>
+            <v-icon @click="character.abilities.constitution.val++"
+              >mdi-plus</v-icon
+            >
+            <h3>
+              {{ character.abilities.constitution.val }}
+            </h3>
+            <v-icon @click="character.abilities.constitution.val--"
+              >mdi-minus</v-icon
+            >
+          </template>
+          <v-card-subtitle>
+            {{ character.abilities.constitution.mod }}
+          </v-card-subtitle>
+        </v-card>
+        <v-card class="ability-card">
+          <v-card-title>Intelligence</v-card-title>
+          <template>
+            <v-icon @click="character.abilities.intelligence.val++"
+              >mdi-plus</v-icon
+            >
+            <h3>
+              {{ character.abilities.intelligence.val }}
+            </h3>
+            <v-icon @click="character.abilities.intelligence.val--"
+              >mdi-minus</v-icon
+            >
+          </template>
+          <v-card-subtitle>
+            {{ character.abilities.intelligence.mod }}
+          </v-card-subtitle>
+        </v-card>
+        <v-card class="ability-card">
+          <v-card-title>Wisdom</v-card-title>
+          <template>
+            <v-icon @click="character.abilities.wisdom.val++">mdi-plus</v-icon>
+            <h3>
+              {{ character.abilities.wisdom.val }}
+            </h3>
+            <v-icon @click="character.abilities.wisdom.val--">mdi-minus</v-icon>
+          </template>
+          <v-card-subtitle>
+            {{ character.abilities.wisdom.mod }}
+          </v-card-subtitle>
+        </v-card>
+        <v-card class="ability-card mb-4">
+          <v-card-title>Charisma</v-card-title>
+          <template>
+            <v-icon @click="character.abilities.charisma.val++"
+              >mdi-plus</v-icon
+            >
+            <h3>
+              {{ character.abilities.charisma.val }}
+            </h3>
+            <v-icon @click="character.abilities.charisma.val--"
+              >mdi-minus</v-icon
+            >
+          </template>
+          <v-card-subtitle>
+            {{ character.abilities.charisma.mod }}
+          </v-card-subtitle>
+        </v-card>
+      </v-row>
+      <v-row>
+        <v-btn color="success" @click="save"> Save </v-btn>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'character',
-  components: {},
-  data() {
-    return {
-      session: {},
-      newChar: {},
+  data: () => ({
+    character: {},
+    alignments: ['lawful good', 'lawful neutral', 'lawful evil'],
+  }),
+  async created() {
+    const { id } = this.$route.params;
+    const res = await this.getCharacter(id);
+
+    const character = await res;
+
+    this.character = {
+      _id: character._id,
+      name: character.name,
+      level: character.level,
+      race: character.race,
+      class: character.class,
+      background: character.background,
+      alignment: character.alignment,
+      armorClass: character.armorClass,
+      initiative: character.initiative,
+      speed: character.speed,
+      abilities: character.abilities || this.abilityBlank,
     };
   },
-  async created() {
-    const { id: sessionId } = this.$route.params;
-    this.session.id = sessionId;
-    this.findChars({
-      query: {
-        sessionId: this.session.id,
-        userId: this.user._id,
-      },
-    });
-  },
   computed: {
-    ...mapState(['user']),
-    ...mapGetters('characters', { findCharsInStore: 'find' }),
-    characters() {
-      return this.findCharsInStore({
-        query: {
-          sessionId: null,
-          userId: this.user._id,
+    abilityBlank() {
+      return {
+        strength: {
+          val: 0,
+          mod: 0,
         },
-      }).data;
+        dexterity: {
+          val: 0,
+          mod: 0,
+        },
+        constitution: {
+          val: 0,
+          mod: 0,
+        },
+        intelligence: {
+          val: 0,
+          mod: 0,
+        },
+        wisdom: {
+          val: 0,
+          mod: 0,
+        },
+        charisma: {
+          val: 0,
+          mod: 0,
+        },
+      };
     },
   },
   methods: {
-    ...mapActions('characters', { findChars: 'find' }),
-    ...mapActions('characters', { patchChar: 'patch' }),
-    async joinSession(r) {
-      const { _id: characterId } = r;
-      await this.patchChar([
-        characterId,
-        { sessionId: this.session.id, inSession: true },
-      ]);
-      this.$router.push(`/session/${this.session.id}/character/${characterId}`);
+    ...mapActions('characters', { getCharacter: 'get' }),
+    ...mapActions('characters', { patchCharacter: 'patch' }),
+    async save() {
+      await this.patchCharacter([this.character._id, this.character]);
     },
   },
 };
 </script>
 
 <style scoped>
-.create-character {
+.v-card {
+  height: 100%;
+  margin: 4px;
+}
+
+.v-text-field {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.ability-card {
+  width: 47%;
   display: flex;
-  align-self: flex-end;
-  margin-bottom: 10px;
-}
-
-.create-char-input {
-  width: 250px;
-  margin-right: 10px;
-  margin-top: 10px;
-}
-
-.create-char-button {
-  width: 100px;
-  margin-top: 10px;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
