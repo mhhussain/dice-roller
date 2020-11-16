@@ -152,7 +152,17 @@ export default {
   name: 'character',
   data: () => ({
     character: {},
-    alignments: ['lawful good', 'lawful neutral', 'lawful evil'],
+    alignments: [
+      'lawful good',
+      'lawful neutral',
+      'lawful evil',
+      'neutral good',
+      'neutral (true)',
+      'neutral evil',
+      'chaotic good',
+      'chaotic neutral',
+      'chaotic evil',
+    ],
   }),
   async created() {
     const { id } = this.$route.params;
