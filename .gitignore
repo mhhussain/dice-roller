@@ -1,4 +1,5 @@
 node_modules
 .env
 *.log
-/server/src/public
+server/src/public
+client/dist_electron
